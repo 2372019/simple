@@ -1,0 +1,149 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/index') ?>" id="linkIndex">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/ajaxSearch') ?>" id="linkSendAjax">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/editThu/') ?>" id="linkEditThu">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/delete/thu/') ?>" id="linkDeleteThu">
+	<div class="w3-col l2 m4 s2 filter-limit">
+		
+		<span class="name-filter">Limit:</span> 
+		
+		<?php 
+		$limtSelector = new Phalcon\Forms\Element\Select('limitThu', [
+				"25" 		=> "25",
+				"50"  		=> "50",
+				"100"  		=> "100",
+				"200" 		=> "200",
+				"500" 		=> "500",
+				"1000" 		=> "1,000",
+		]);
+		
+		$limtSelector->setDefault($limit);
+		
+		echo $limtSelector->render();
+		?>
+	</div>
+	<div class="w3-col l5 m8 s10 filter-search">
+		<span class="name-filter">Filter: </span> 
+		<input type="search" id="filterRowsThu" name="filterRows" value="<?= $filterRows; ?>" placeholder="Search this table">
+		<button type="button" id="btnResetFilterThu" class="buttonX">x</button>
+		<button type="submit" class="w3-green submit" id="btnFilterThu">Filter</button>
+	</div>
+	<div class="w3-col l5 filter-date">
+		<span class="name-filter">Ngày: </span> 
+		<input type="date" id="dateStartThu" name="dateStart" value="<?= date("Y-m-d") ?>">
+		<input type="date" id="dateEndThu" name="dateEnd" value="<?= date("Y-m-d") ?>">
+		<button type="button" class="w3-green submit" id="btnDateThu">Gửi</button>
+	</div>
+</div>
+
+<div class="w3-responsive">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+		  	<tr class="w3-blue">
+				<th>STT</th>
+				<?php if ($this->view->duocXoa) { echo "<th>Xóa</th>";} ?>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'thu')">Ngày
+					<input type="hidden" name="ngay" value="ngay ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Thu')">Nội Dung
+					<input type="hidden" name="noiDung" value="noiDung ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Thu')">Số Tiền
+					<input type="hidden" name="soTien" value="soTien ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Thu')">Nguồn Thu
+					<input type="hidden" name="nguonThu" value="nguonThu ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Thu')">Tên Khách Hàng
+					<input type="hidden" name="tenKhachHang" value="tenKhachHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Thu')">Tên Nhà Cung Cấp
+					<input type="hidden" name="tenNhaCungCap" value="tenNhaCungCap ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Thu')">Hình Thức
+					<input type="hidden" name="hinhThuc" value="hinhThuc ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Thu')">Tên Ngân Hàng
+					<input type="hidden" name="ckNganHang" value="ckNganHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Thu')">Ghi chú
+					<input type="hidden" name="ghiChu" value="ghiChu ASC">
+					</a>
+				</th>
+		  	</tr>
+		</thead>
+		<tbody class="tbodyThu">
+		<?php
+
+		$tongTienThucThu = 0;
+
+		if ( count($pageThucThu->items) ) {
+			
+			$stt = 1;
+			foreach ( $pageThucThu->items as $qltc ) { ?>
+				<tr>
+					<td data-label ='STT'><?= $stt + ($pageThucThu->current - 1) * $pageThucThu->limit; ?></td>
+					<?php if ($this->view->duocXoa) {?>
+						<td data-label ='Xóa'><a href="<?= $this->url->get('quanlythuchi/delete/thu/' . $qltc->id) ?>" title="Xóa Thực Thu này" class="w3-text-red delete" onclick="return confirm('Bạn Có Muốn Xóa Không');">&#10008;</a></td>
+					<?php } ?>
+					<td data-label ='Ngày'><a href="<?= $this->url->get('quanlythuchi/editThu/' . $qltc->id) ?>" title="edit"><?= date_format(date_create($qltc->ngay), 'd-m-Y'); ?></a></td>
+					<td data-label ='Nội Dung'><?= $qltc->noiDung; ?></td>
+					<td data-label ='Số Tiền' class="w3-right-align"><?= number_format($qltc->soTien) ?></td>
+					<td data-label ='Nguồn Thu'><?= $qltc->nguonThu; ?></td>
+					<td data-label ='Tên KH'><?= isset($qltc->Customers->tenKhachHang) ? $qltc->Customers->tenKhachHang : ''; ?></td>
+					<td data-label ='Tên NCC'><?= isset($qltc->NhaCungCap->tenNhaCungCap) ? $qltc->NhaCungCap->tenNhaCungCap : ''; ?></td>
+					<td data-label ='Hình Thức'><?= $qltc->hinhThuc; ?></td>
+					<td data-label ='CK Ngân Hàng'><?= empty($qltc->ckNganHang) ? '' : $qltc->NganHang->tenNganHang; ?></td>
+					<td data-label ='Ghi Chú'><?= $qltc->ghiChu; ?></td>
+				</tr>
+
+				<?php $tongTienThucThu += $qltc->soTien; ?>
+		<?php 
+			$stt++;
+		}} else { ?>
+				<tr>
+					<td colspan="11"><div class="alert alert-warning">Không tìm thấy Quản Lý Thu Chi</div></td>
+				</tr>
+		<?php } ?>
+		</tbody>
+		<?php
+		if ( $pageThucThu->total_pages > 0 ) { ?>
+		<tfoot>
+	        <tr>
+	            <td colspan="11" align="right">
+					<div class="w3-bar w3-center" id="paginationThu">
+						<?= $this->tag->linkTo(['quanlythuchi/index?pageThucThu=' . $pageThucThu->first, '&laquo;', 'class' => 'w3-button w3-hover-green']) ?>
+						
+						<?php for ( $pageThuChiIndex = 1; $pageThuChiIndex <= $pageThucThu->total_pages; $pageThuChiIndex++ ) {
+						
+							if ( $pageThuChiIndex == $pageThucThu->current ) {
+								echo $this->tag->linkTo(['quanlythuchi/index?pageThucThu=' . $pageThuChiIndex, $pageThuChiIndex, 'class' => 'w3-button w3-hover-gray w3-blue']);
+							} else {
+								echo $this->tag->linkTo(['quanlythuchi/index?pageThucThu=' . $pageThuChiIndex, $pageThuChiIndex, 'class' => 'w3-button w3-hover-gray ']);
+							}
+						}
+						
+						echo $this->tag->linkTo(['quanlythuchi/index?pageThucThu=' . $pageThucThu->last, '&raquo;', 'class' => 'w3-button w3-hover-green']) ?>
+						
+						( <?= $pageThucThu->current ?> of <?= $pageThucThu->total_pages ?> )
+						
+					</div>
+	            </td>
+	        </tr>
+	    </tfoot>
+		<?php } ?>
+	</table>
+</div>
+<div class="w3-row">
+	<div class="w3-right-align" style="margin-top:15px;background: #000;padding: 10px;color: #fff">
+		<?php echo "<b>Tổng Tiền:</b> <span class='tongTienThucThu'>".number_format($tongTienThucThu)."</span>"; ?>
+	</div>
+</div>

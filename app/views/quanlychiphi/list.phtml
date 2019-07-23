@@ -1,0 +1,117 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+	<input type="hidden" value="<?= $this->url->get('quanlychiphi/ajaxSearch') ?>" id="linkAddChiPhiSendAjax">
+	<div class="w3-col l2 m4 s2 filter-limit">
+		
+		<span class="name-filter">Limit:</span>
+		
+		<?php 
+		$limtSelector = new Phalcon\Forms\Element\Select('limitAddChiPhi', [
+				"25" 		=> "25",
+				"50"  		=> "50",
+				"100"  		=> "100",
+				"200" 		=> "200",
+				"500" 		=> "500",
+				"1000" 		=> "1,000",
+		], ['using'    => ["id", "name"] ]);
+		
+		$limtSelector->setDefault($limit);
+		
+		echo $limtSelector->render();
+		?>
+	</div>
+	<div class="w3-col l5 m8 s10 filter-search">
+		<span class="name-filter">Filter: </span>
+		<input type="search" id="addChiPhiFilterRows" name="addChiPhiFilterRows" value="<?= $filterRows; ?>">
+		<button type="button" id="btnAddChiPhiResetFilter" class="buttonX">x</button>
+		<button type="submit" class="w3-green submit" id="btnAddChiPhiFilter">Filter</button>
+	</div>
+	<div class="w3-col l5 filter-date">
+		<span class="name-filter">Ngày: </span> 
+		<input type="date" name="addChiPhiDateStart" value="<?= date("Y-m-d") ?>">
+		<input type="date" name="addChiPhiDateEnd" value="<?= date("Y-m-d") ?>">
+		<button type="button" class="w3-green submit" id="btnAddChiPhiDate">Gửi</button>
+	</div>
+</div>
+
+<div class="w3-responsive">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+		  	<tr class="w3-blue">
+				<th>STT</th>
+				<th><a class="orderColumn width100px" onclick="orderByAddDatHang(this)">Ngày
+					<input type="hidden" name="Ngay" value="Ngay ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddDatHang(this)">Chi Cho Ai
+					<input type="hidden" name="chiChoAi" value="chiChoAi ASC">
+					</a>
+				</th>
+				<th class="w3-center"><a class="orderColumn" onclick="orderByAddDatHang(this)">Số Tiền Chi
+					<input type="hidden" name="soTienChi" value="soTienChi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddDatHang(this)">Lý Do Chi
+					<input type="hidden" name="lyDoChi" value="lyDoChi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width150px" onclick="orderByAddDatHang(this)">Loại Chi Phí
+					<input type="hidden" name="loaiChiPhi" value="loaiChiPhi ASC">
+					</a>
+				</th>
+				<th>Hoàn Tất</th>
+		  	</tr>
+		</thead>
+		<tbody id="addChiPhiTbody" class="tbody">
+			<?php
+
+			 if ( count($page->items) ) {
+				
+				$stt = 1;
+				foreach ( $page->items as $qlcp ) {
+				?>
+					<tr>
+						<td data-label ='STT'><?= $stt + ($page->current - 1) * $page->limit; ?></td>
+						<td data-label ='Ngày'><a href="#" onclick="chonAddChiPhi(this)" title="<?= $qlcp->id ?>" class="chonAddChiPhi"><?= $qlcp->Ngay ?></a></td>
+						<td data-label ='Chi Cho Ai' class="chiChoAi"><?= $qlcp->chiChoAi ?></td>
+						<td data-label ='Số Tiền Chi' class="w3-right-align w3-bold soTienChi"><?= number_format($qlcp->soTienChi) ?></td>
+						<td data-label ='Lý Do Chi' class="lyDoChi"><?= $qlcp->lyDoChi ?></td>
+						<td data-label ='Loại CP'><?= $qlcp->loaiChiPhi ?></td>
+						<td data-label ='Hoàn Tất'><?= $qlcp->trangThai ?></td>
+					</tr>
+			<?php 
+				$stt++;
+			}} else { ?>
+					<tr>
+						<td colspan="8"><div class="alert alert-warning">Không tìm thấy thông tin</div></td>
+					</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+</div>
+
+<?php
+if ( $page->total_pages > 0 ) { ?>
+	
+	<div class="w3-bar w3-center" id="paginationAddChiPhi">
+		<a href="#" title="<?= $page->first; ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)">&laquo;</a>
+		
+		<?php for ( $pageIndex = 1; $pageIndex <= $page->total_pages; $pageIndex++ ) {
+		
+			if ( $pageIndex == $page->current ) { ?>
+				<a href="#" title="<?= $pageIndex ?>" class="w3-button w3-hover-green w3-blue" onclick="paginationAjax(this)"><?= $pageIndex ?></a>
+			<?php } else {
+				?>
+				<a href="#" title="<?= $pageIndex ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)"><?= $pageIndex ?></a>
+			<?php
+			}
+		}
+		?>
+		
+		<a href="#" title="<?= $page->last; ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)">&laquo;</a>
+		
+		( <?= $page->current ?> of <?= $page->total_pages ?> )
+		
+	</div>
+
+<?php } ?>
+<?= $this->tag->javascriptInclude('js/js-list-quanlychiphi.js') ?>

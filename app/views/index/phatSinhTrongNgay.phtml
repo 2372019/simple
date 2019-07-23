@@ -1,0 +1,121 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+
+	<input type="hidden" value="<?= $this->url->get('nhacungcap/index') ?>" id="linkIndex">
+	<input type="hidden" value="<?= $this->url->get('nhacungcap/ajaxSearch') ?>" id="linkSendAjax">
+	<input type="hidden" value="<?= $this->url->get('nhacungcap/edit/') ?>" id="linkEdit">
+	<input type="hidden" value="<?= $this->url->get('nhacungcap/delete/') ?>" id="linkDelete">
+	<div class="w3-col l2 m2 s3 filter-limit">
+		
+		<span class="name-filter">Limit:</span>
+		
+		<?php 
+		$limtSelector = new Phalcon\Forms\Element\Select('limit', [
+				"25" 		=> "25",
+				"50"  		=> "50",
+				"100"  		=> "100",
+				"200" 		=> "200",
+				"500" 		=> "500",
+				"1000" 		=> "1,000",
+		], ['using'    => ["id", "name"] ]);
+		
+		$limtSelector->setDefault($limit);
+		
+		echo $limtSelector->render();
+		?>
+	</div>
+</div>
+
+<div class="w3-responsive">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+		  	<tr class="w3-blue">
+				<th>STT</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Ngày
+					<input type="hidden" name="ngay" value="ngay ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Số Đơn Hàng
+					<input type="hidden" name="soDonHang" value="soDonHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Doanh Thu Có VAT
+					<input type="hidden" name="doanhThuCoVAT" value="doanhThuCoVAT ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Thu Bán Hàng
+					<input type="hidden" name="thuBanHang" value="thuBanHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Tổng Thu
+					<input type="hidden" name="tongThu" value="tongThu ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Tổng Chi
+					<input type="hidden" name="thucChi" value="thucChi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Tổng Công Nợ
+					<input type="hidden" name="tongCongNo" value="tongCongNo ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Công Nợ ↑↓
+					<input type="hidden" name="congNoThayDoi" value="congNoThayDoi ASC">
+					</a>
+				</th>
+		  	</tr>
+		</thead>
+		<tbody class="tbody">
+		<?php
+		 if ( count($page->items) ) {
+			
+			$stt = 1;
+			foreach ( $page->items as $customer ) { ?>
+			<tr>
+				<td data-label ='STT'><?= $stt + ($page->current - 1) * $page->limit; ?></td>
+				<td data-label ='Ngày'><?php
+					$date = date_create($customer->ngay);
+					echo date_format($date,"d/m/Y"); ?></td>
+				<td data-label ='Số Đơn Hàng' class="w3-center-align"><?= number_format($customer->soDonHang); ?></td>
+				<td data-label ='Doanh Thu Có VAT' class="w3-right-align"><?= number_format($customer->doanhThuCoVAT); ?></td>
+				<td data-label ='Thu Bán Hàng' class="w3-right-align"><?= number_format($customer->thuBanHang); ?></td>
+				<td data-label ='Tổng Thu' class="w3-right-align"><?= number_format($customer->tongThu); ?></td>
+				<td data-label ='Tổng Chi' class="w3-right-align"><?= number_format($customer->thucChi); ?></td>
+				<td data-label ='Tổng Công Nợ' class="w3-right-align"><?= number_format($customer->tongCongNo); ?></td>
+				<td data-label ='Công Nợ ↑↓' class="w3-right-align"><?= number_format($customer->congNoThayDoi); ?></td>		
+			</tr>
+		<?php 
+			$stt++;
+		}} else { ?>
+				<tr>
+					<td colspan="12"><div class="alert alert-warning">Không tìm thấy Khách Hàng</div></td>
+				</tr>
+		<?php } ?>
+		</tbody>
+		<?php
+		if ( $page->total_pages > 0 ) { ?>
+		<tfoot>
+	        <tr>
+	            <td colspan="12" align="right">
+					<div class="w3-bar w3-center" id="pagination">
+						<?= $this->tag->linkTo(['index/phatSinhTrongNgay?page=' . $page->first, '&laquo;', 'class' => 'w3-button w3-hover-green']) ?>
+						
+						<?php for ( $pageIndex = 1; $pageIndex <= $page->total_pages; $pageIndex++ ) {
+						
+							if ( $pageIndex == $page->current ) {
+								echo $this->tag->linkTo(['index/phatSinhTrongNgay?page=' . $pageIndex, $pageIndex, 'class' => 'w3-button w3-hover-gray w3-blue']);
+							} else {
+								echo $this->tag->linkTo(['index/phatSinhTrongNgay?page=' . $pageIndex, $pageIndex, 'class' => 'w3-button w3-hover-gray ']);
+							}
+						}
+						
+						echo $this->tag->linkTo(['index/phatSinhTrongNgay?page=' . $page->last, '&raquo;', 'class' => 'w3-button w3-hover-green']) ?>
+						
+						( <?= $page->current ?> of <?= $page->total_pages ?> )
+						
+					</div>
+	            </td>
+	        </tr>
+	    </tfoot>
+		<?php } ?>
+	</table>
+</div>

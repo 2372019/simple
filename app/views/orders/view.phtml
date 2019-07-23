@@ -1,0 +1,126 @@
+<div class="w3-main w3-container notIn">
+    <h3 class="title-admin w3-center">SỬA ĐƠN HÀNG MỚI</h3>
+    <?= $this->flashSession->output(); ?>
+
+    <div class="w3-row-padding">
+        <form action="" method="post" accept-charset="utf-8">
+        <div class="w3-col l2">
+            <label class="w3-text-green"><b>Tên Khách Hàng</b></label>
+            <input type="text" value="<?= $order->Customers->tenKhachHang ?>" class='w3-input displayInline w3-border w3-light-gray' disabled>
+        </div>
+        <div class="w3-col l2">
+            <label class="w3-text-green"><b>Địa Chỉ Giao hàng</b></label>
+            <input type="text" value="<?= $order->diaChiGiaoHang ?>" class='w3-input w3-border w3-light-gray' disabled>
+        </div>
+        <div class="w3-col l3">   
+            <label class="w3-text-green"><b>Thông Tin Người Nhận Hàng</b></label>
+            <input type="text" value="<?= $order->thongTinNguoiNhanHang ?>" class='w3-input w3-border w3-light-gray' disabled>
+        </div>
+        <div class="w3-col l1">    
+            <label class="w3-text-green"><b>Thanh Toán</b></label>
+            <input type="text" value="<?= $order->hinhThucThanhToan ?>" class='w3-input w3-border w3-light-gray' disabled>
+        </div>
+        <div class="w3-col l1">  
+            <label class="w3-text-green"><b>Trạng Thái</b></label>
+            <input type="text" value="<?= $order->trangThai ?>" class='w3-input w3-border w3-light-gray' disabled>
+        </div>
+        <div class="w3-col l1">  
+            <label class="w3-text-green"><b>CTy Bán</b></label>
+            <input type="text" value="<?= $order->CongTyBanHang->tenCongTy ?>" class='w3-input w3-border w3-light-gray' disabled>
+        </div>
+        <div class="w3-col l1">
+            <label class="w3-text-green"><b>Ng Giao</b></label>
+            <?php echo $form->render('idEmployees', array('class' => 'w3-input w3-border validateFiled')); ?>
+        </div>
+        <div class="w3-col l1">
+            <label class="w3-text-green"><b>C.P Giao Hàng</b></label>
+            <input type="text" id="chiPhiGiaoHang" name="chiPhiGiaoHang" value="<?= number_format($order->chiPhiGiaoHang) ?>" class="w3-input w3-border keyUpFormatAmount replacePrice">
+        </div>
+    </div>
+    <br>
+           
+    <table id="addTable" class="w3-table-all w3-bordered w3-border">
+        <thead>
+            <tr class="w3-red">
+                <th>STT</th>
+                <th>Mã SP</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Số Lượng</th>
+                <th>Đơn Giá</th>
+                <th>Thành Tiền</th>
+                <th>Ghi Chú</th>
+                <th>Tồn Kho</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $i=1; ?>
+            <?php foreach ($ctorders as $key => $value): ?>
+               <?php 
+               $mota = '<strong>'.$value->Products->tenSanPham.'</strong><br>'.$value->Products->moTa; 
+               ?>  
+                <tr>
+                    <td><?= $i ?></td>
+                    <td><?= $value->Products->maSanPham ?></td>
+                    <td><?= $value->Products->tenSanPham ?></td>
+                    <td><?= $value->soLuong ?></td>
+                    <td><?= number_format($value->donGia) ?></td>
+                    <td><?= number_format($value->thanhTien) ?></td>
+                    <td><?= $value->ghiChu ?></td>
+                    <td><?= $value->Products->tonHienTai ?></td>
+                    <?php $i++ ?>
+                </tr>
+            <?php endforeach ?>
+            <tr>
+                <td colspan="6">
+                    <label for="">Xuất Hóa Đơn</label>
+                    <input type="checkbox" id="coXuatHoaDonKhong" value="1" class="w3-check" <?= $order->coXuatHoaDonKhong == "1" ? "checked" : "" ?> disabled >
+
+                </td>
+                <td>Tổng Cộng Chưa VAT:</td>
+                <td colspan="2"><?= number_format($order->tongCongChuaVAT); ?></td>
+            </tr>
+            <tr style="<?= ($order->coXuatHoaDonKhong == 0)? "display: none" : "" ?>">
+                <td colspan="2"></td>
+                <td>Ngày Xuất HĐ:</td>
+                <td><?php echo $form->render('ngayXuatHoaDon', array( 'class' => 'w3-input w3-border', 'value' => date('Y-m-d'))); ?></td>
+                <td>Số HĐ:</td>
+                <td><?php echo $form->render('soHoaDon', array('class' => 'w3-input w3-border' ,)); ?></td>
+                <td>Thuế VAT:</td>
+                <td colspan="2"><?= number_format($order->thueVAT); ?></td>
+            </tr>
+            <tr class="sum">
+                <td colspan="6"></td>
+                <td>Tổng Tiền:</td>
+                <td colspan="2"><?= number_format($order->tongTienThanhToan); ?></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <div class="w3-row-padding">
+		<div class="w3-col l2">
+			<label class="w3-text-green"><b>Đã Thanh Toán</b></label>
+            <input type="text" value="<?= $order->daThanhToan ?>" class='w3-input w3-border w3-light-gray' disabled>
+		</div>
+		<div class="w3-col l2">
+			<label class="w3-text-green"><b>Công Nợ</b></label>
+            <input type="text" value="<?= $order->congNo ?>" class='w3-input w3-border w3-light-gray' disabled>
+		</div>
+        <div class="w3-col l2">
+            <label class="w3-text-green"><b>Ngày Hẹn T.Toán</b></label>
+            <input type="text" value="<?= $order->ngayHenThanhToan ?>" class='w3-input w3-border w3-light-gray' disabled>
+        </div>
+        <div class="w3-col l1">
+            <label class="w3-text-green"><b>Hoa Hồng</b></label>
+            <input type="text" value="<?= number_format($order->hoaHong) ?>" class='w3-input w3-border w3-light-gray' disabled>
+
+        </div>
+        <div class="w3-col l5">
+        	
+            <textarea id='ghiChu' name="ghiChu" class='w3-input w3-border'><?= $order->ghiChu ?></textarea>
+        </div>   
+        <div class="padding-top10px w3-margin-top">
+            <button class="w3-btn w3-green submit">Save</button>
+        </div>
+        </form>
+    </div>
+</div>

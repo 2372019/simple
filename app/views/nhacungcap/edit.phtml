@@ -1,0 +1,36 @@
+<div class="w3-main">
+		
+    <?= $this->flashSession->output(); ?>
+	<?= $this->getContent(); // Thông báo lỗi chung?>
+
+    <form action="" method="post" accept-charset="utf-8" id="formAddNhaCungCap">
+    	<div class="w3-row-padding">
+    		<div class="w3-col l8">
+    			<div class="w3-row-padding">
+					<div class="w3-col l6 m6">    
+			          	<label class="w3-text-green"><b>Tên Nhà Cung Cấp <span class="required">(*)</span></b></label>
+			          	<?php echo $form->render('tenNhaCungCap', array('class' => 'w3-input w3-border validateFiled')); ?>
+			        </div>
+			        <div class="w3-col l6 m6">     
+			          	<label class="w3-text-green"><b>Địa Chỉ <span class="required">(*)</span></b></label>
+			          	<?php echo $form->render('diaChi', array('class' => 'w3-input w3-border validateFiled')); ?>
+			        </div>
+			        <div class="w3-col l6 m6">    
+			          	<label class="w3-text-green"><b>Liên Hệ <span class="required">(*)</span></b></label>
+			          	<?php echo $form->render('lienHe', array('class' => 'w3-input w3-border validateFiled')); ?>
+			        </div>
+			        <div class="w3-col l6 m6">     
+			          	<label class="w3-text-green"><b>Mô Tả</b></label>
+			          	<?php echo $form->render('moTa', array('class' => 'w3-input w3-border')); ?>
+			        </div>
+		    	</div>
+    		</div>
+    		<div class="w3-col l4">
+    			<label class="w3-text-green"><b>Ghi Chú</b></label>
+			  	<?php echo $form->render('ghiChu', array('class' => 'w3-input w3-border', 'rows' => '3')); ?>
+    		</div>	
+		</div>
+
+	  	<div class="w3-section"><button id="submit" class="w3-btn w3-green">Edit</button></div>
+	</form>
+</div>

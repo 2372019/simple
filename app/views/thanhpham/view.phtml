@@ -1,0 +1,79 @@
+<div class="w3-main w3-container" style="margin-top: 30px">
+
+	<?= $this->flashSession->output(); ?>
+	<?= $this->getContent(); ?>
+	 
+	<div class="w3-section overflowHidden">
+		<div class="w3-col l4 m4 padding-right10px">     
+			<label class="w3-text-green"><b>Mã T.Phẩm:</b></label>
+			<input type="text" readonly="true" class="width100 validateFiled" name="maThanhPham" id="maThanhPham" value="<?= $thanhPham->Products->maSanPham ?>"> &nbsp; 
+			<label class="w3-text-green"><b> Số lượng:</b></label>
+			<input type="number" readonly="true" class="width80 validateFiled" name="soLuongThanhPham" id="soLuongThanhPham" value="<?= $thanhPham->soLuongThanhPham ?>">
+		</div>
+		<div class="w3-col l8 m8">    
+			<span class="w3-text-green"><b>Tên Thành Phẩm: </b></span>
+			<span type="text" name="tenThanhPham" class="w3-bold" id="tenThanhPham"><?= $thanhPham->Products->tenSanPham ?></span>
+		</div>
+	</div>
+	
+   <table id="addTable" class="w3-table-all w3-bordered w3-border">
+		<thead>
+			<tr class="w3-red">
+				<th>STT</th>
+				<th>Mã Vật Tư</th>
+				<th>Tên Vật Tư</th>
+				<th>SL Vật Tư</th>
+				<th>Tổng SL VT</th>
+				<th>Tồn H.Tại</th>
+				<th>Tồn Cuối Kỳ</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<?php $countCtproducts = count($thanhPham->Products->Ctproducts); ?>
+
+			<?php if ($countCtproducts > 0) :?>
+
+				<?php for($i = 0; $i < $countCtproducts; $i++): ?>
+
+						<tr class="addTrTable">
+						
+							<td class="stt"><?= $i + 1 ?></td>
+							<td><?= $ctthanhPham[$i]->Products->maSanPham ?></td>
+							
+							<td class="tenSP"><?= $ctthanhPham[$i]->Products->tenSanPham ?></td>
+							
+							<td class="slVatTu"><?= $ctthanhPham[$i]->soLuongVatTu / $thanhPham->soLuongThanhPham ?></td>
+							
+							<td class="tongSLVatTu"><?= $ctthanhPham[$i]->soLuongVatTu ?></td>
+														
+							<td class="tonHienTai"><?= $ctPhieuXuatKho[$i]->tonDauKy ?></td>
+							<td class="tonCuoiKy"><?= $ctPhieuXuatKho[$i]->tonCuoiKy ?></td>
+						</tr>
+
+				<?php endfor ?>
+			<?php endif ?>
+
+			<?php for($j = $countCtproducts; $j < count($ctthanhPham); $j++) :?>
+
+				<tr class="addTrTable">
+
+					<td class="stt"><?= $j + 1 ?></td>
+					<td><?= $ctthanhPham[$j]->Products->maSanPham ?></td>
+					
+					<td class="tenSP"><?= $ctthanhPham[$j]->Products->tenSanPham ?></td>
+					
+					<td>----</td>
+					
+					<td><?= $ctthanhPham[$j]->soLuongVatTu ?></td>
+					
+					<td class="tonHienTai"><?= $ctPhieuXuatKho[$j]->tonDauKy ?></td>
+					<td class="tonCuoiKy"><?= $ctPhieuXuatKho[$j]->tonCuoiKy ?></td>
+				
+				</tr>
+			<?php endfor ?>
+		</tbody>
+   </table>
+	   
+   <a href="<?= $this->url->get('thanhpham/index?activeTab=search') ?>" class="w3-button w3-green">Quay Lại</a>
+</div>

@@ -1,0 +1,140 @@
+<div class="w3-main">
+	<div id="listProductsModal" class="w3-modal">
+		<div class="w3-modal-content">
+			<div class="w3-container">
+				<span onclick='$("#listProductsModal").hide()' class="w3-button w3-display-topright">&times;</span>
+				<input type="hidden" id="listProductsLink" value="<?php echo $this->url->get('products/list') ?>" />
+				<div id="listProductsTable">
+					xxxx
+				</div>
+			</div>
+		</div>
+   </div>
+
+   <div class="listNhaCungCapModal w3-modal">
+		<div class="w3-modal-content">
+			<div class="w3-container">
+				<span onclick='$(".listNhaCungCapModal").hide()' class="w3-button w3-display-topright">&times;</span>
+				<input type="hidden" id="listNhaCungCapLink" value="<?php echo $this->url->get('nhacungcap/list') ?>" />
+				<div id="listNhaCungCapTable">
+					xxxx
+				</div>
+			</div>
+		</div>
+   	</div>
+
+   	<?= $this->flashSession->output(); ?>
+	<?= $this->getContent(); // Thông báo lỗi chung?>
+
+    <form action="" method="post" accept-charset="utf-8">
+		<input type="hidden" value="<?= $this->url->get('products/ajaxProduct') ?>" id="addLinkSendAjax">
+    		
+    		<div class="row w3-row-padding">
+
+	    		<div class="w3-col l2 m4">
+	    			<?php echo $form->render('idNhaCungCap', array('class' => 'w3-input w3-border idNhaCungCap validateFiled')); ?>
+	    			<label class="w3-text-green"><b>Nhà Cung Cấp</b><span class="required">(*)</span></label>
+					<input type="text" name="tenNhaCungCap" class="tenNhaCungCap" value="<?= $dathang->NhaCungCap->tenNhaCungCap ?>" disabled>
+					<button id="btnChonNhaCungCap" type="button" class="buttonX w3-green w3-hover-gray"><i class="fa fa-search" aria-hidden="true"></i></button>
+	    		</div>
+
+	    		<div class="w3-col l4 m4">
+                    <label class="w3-text-green"><b>Nội Dung</b><span class="required">(*)</span></label>
+                    <?php echo $form->render('noiDung', array('class' => 'w3-input w3-border validateFiled')); ?>
+                </div>
+
+	    		<div class="w3-col l4 m4">
+	    			<label class="w3-text-green"><b>Ghi Chú</b></label>
+			   		<?php echo $form->render('ghiChu', array('class' => 'w3-input w3-border', 'rows' => 3)); ?>
+	    		</div>
+	    		
+				<br>
+               
+               <table id="addTable" class="w3-table-all w3-bordered w3-border w3-margin-top">
+                    <thead>
+                         <tr class="w3-red">
+                           <th>STT</th>
+                           <th>Mã SP</th>
+                           <th>Tên Sản Phẩm</th>
+                           <th>Số Lượng</th>
+                           <th>Đơn Giá</th>
+                           <th>Thành Tiền</th>
+                           <th>Ghi Chú</th>
+                           <th>Tồn Kho</th>
+                           <th>Xóa</th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                    	<?php $i=1; ?>
+		                <?php foreach ($ctdathang as $key => $value): ?>
+		                    <tr class="addTrTable">
+		                        <input class="idCtdatHang" type="hidden" name="idCtdatHang[]" value="<?= $value->id ?>">
+		                        <input class="idProducts" type="hidden" name="idProducts[]" value="<?= $value->idProducts ?>">
+		                        <td class="stt"><?= $i ?></td>
+		                        <td><?= $value->Products->maSanPham ?></td>
+		                        <td class="tenSP"><?= $value->Products->tenSanPham ?></td>
+		                        <td><input type="number" class="soLuong" name="soLuong[]" value="<?= $value->soLuong ?>" onchange="changeSoLuong(this)"></td>
+		                        <td><input class="donGiaMoiNhat w3-right-align" type="text" name="donGiaMoiNhat[]" value="<?= number_format($value->donGia) ?>" onchange="changeDonGiaMoiNhat(this)"></td>
+		                        <td class="thanhTien w3-right-align"><?= number_format($value->thanhTien) ?></td>
+		                        <td><input class="ghiChu" type="text" name="ghiChuCtdatHang[]" value="<?= $value->ghiChu ?>"></td>
+		                        <td><?= $value->Products->tonHienTai ?></td>
+		                        <td><a href="#" title="Xóa sản phẩm này" class="w3-text-red" onclick="deleteTr(this)">✘</a></td>
+		                        <?php $i++ ?>
+		                    </tr>
+		                <?php endforeach ?>
+
+                         <tr class="addMaSanPham">
+							<td class="stt-add">1</td>
+							<td colspan="8"><input type="text" id="addMaSanPham" name="addMaSanPham" value="" placeholder="Nhập mã sản phẩm">
+							<button id="btnChonSanPham" type="button" class="w3-green w3-hover-gray"><i class="fa fa-search" aria-hidden="true"></i></button>
+							</td>
+                         </tr>
+                         <tr>
+							<td colspan="6">
+                            <label for="">Xuất Hóa Đơn</label> 
+    					    <input type="checkbox" id="coXuatHoaDonKhong" name="coXuatHoaDonKhong" value="1" class="w3-check" <?= $dathang->coXuatHoaDonKhong == "1" ? "checked" : "" ?> >
+	                        </td>
+	                        <td>Tổng Cộng Chưa VAT:</td>
+	                        <td colspan="2">
+	                            <input type="text" name="tongCongChuaVAT" class="w3-right-align" value="<?= number_format($dathang->tongCongChuaVAT); ?>" id="tongCongChuaVAT" readonly="readonly">
+	                        </td>
+                         </tr>
+                         <tr class="thuevat"style="<?= ($dathang->coXuatHoaDonKhong == 0)? "display: none" : "" ?>">
+                            <td colspan="6"></td>
+	                        <td>Thuế VAT:</td>
+	                        <td colspan="2">
+	                            <input class="w3-right-align" type="text" name="thueVAT" value="<?= number_format($dathang->thueVAT); ?>" id="thueVAT" readonly="readonly">
+	                        </td>
+                         </tr>
+                         <tr class="sum">
+                            <td colspan="2"></td>
+                            <td>Đã Thanh Toán:</td>
+                            <td><input type="text" id ="daThanhToan" name="daThanhToan" value="<?= number_format($dathang->daThanhToan) ?>" readonly="readonly"></td>
+                            <td>Công Nợ:</td>
+                            <td><input type="text" id="congNo" name="congNo" value="<?= number_format($dathang->congNo) ?>" readonly="readonly"></td>
+	                        <td>Tổng Tiền:</td>
+	                        <td colspan="2">
+	                            <input class="w3-right-align" type="text" name="tongTienThanhToan" value="<?= number_format($dathang->tongTienThanhToan); ?>" id="tongTienThanhToan" readonly="readonly">
+	                        </td>
+                         </tr>
+                    </tbody>
+               	</table>
+               <br>
+
+    		</div>
+
+  		<div class="w3-section"><button id="submit" class="w3-btn w3-green">Edit</button></div>
+	</form>
+
+	<?php if ($dathang->nhapKho != 1): ?>
+        <form action='<?= $this->url->get("phieunhapkho/datHangPhieuNhapKho/$dathang->id") ?>' method="post" id="formNhapKho" class=' w3-inline-block'>
+            <div class="padding-top10px">
+              <button class="w3-btn w3-green" id="clickNhapKho">Nhập Kho</button>
+            </div>
+        </form>
+    <?php else: ?>
+        <div class="padding-top10px w3-inline-block">
+            <button class="w3-btn w3-green" disabled>Đã Nhập Kho</button>
+        </div>
+    <?php endif ?>
+</div>

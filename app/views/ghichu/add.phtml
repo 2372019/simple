@@ -1,0 +1,26 @@
+<div class="w3-main">
+    <form action="" method="post" accept-charset="utf-8">
+		<div class="row w3-row-padding">
+
+    		<div class="w3-col l6 m6">
+    			<label class="w3-text-green"><b>Tiêu Đề <span class="required">( * )</span></b></label>
+	          	<?php echo $form->render('tieuDe', array('class' => 'w3-input w3-border validateFiled')); ?>
+    		</div>
+    		<div class="w3-col l3 m6 s6">
+    			<label class="w3-text-green"><b>Chế Độ <span class="required">( * )</span></b></label>
+	          	<?php echo $form->render('cheDo', array('class' => 'w3-input w3-border validateFiled')); ?>
+			</div>
+    		<div class="w3-col l3 m6 s6">
+    			<label class="w3-text-green"><b>Trạng Thái <span class="required">( * )</span></b></label>
+	          	<?php echo $form->render('trangThai', array('class' => 'w3-input w3-border validateFiled')); ?>
+    		</div>
+			<div class="w3-col l6">
+    			<label class="w3-text-green"><b>Nội Dung <span class="required">( * )</span></b></label>
+	          	<?php echo $form->render('noiDung', array('class' => 'w3-input w3-border validateFiled', 'rows' => 5)); ?>
+    		</div>
+			<br>
+		</div>
+
+  		<div class="w3-section"><button id="submit" class="w3-btn w3-green">Đăng ký</button></div>
+	</form>
+</div>

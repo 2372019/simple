@@ -1,0 +1,105 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+
+	<input type="hidden" value="<?= $this->url->get('nhacungcap/edit/') ?>" id="linkNhaCungCapEdit">
+	<input type="hidden" value="<?= $this->url->get('nhacungcap/ajaxSearch') ?>" id="linkAddNhaCungCapSendAjax">
+	<div class="w3-col l2 m2 s3 filter-limit">
+		
+		<span class="name-filter">Limit:</span>
+		
+		<?php 
+		$limtSelector = new Phalcon\Forms\Element\Select('limitAddNhaCungCap', [
+				"25" 		=> "25",
+				"50"  		=> "50",
+				"100"  		=> "100",
+				"200" 		=> "200",
+				"500" 		=> "500",
+				"1000" 		=> "1,000",
+		], ['using'    => ["id", "name"] ]);
+		
+		$limtSelector->setDefault($limit);
+		
+		echo $limtSelector->render();
+		?>
+	</div>
+	<div class="w3-col l5 m5 s9 filter-search">
+		<span class="name-filter">Filter: </span> 
+		<input type="search" id="addNhaCungCapFilterRows" name="addNhaCungCapFilterRows" value="<?= $filterRows; ?>" placeholder="Search this table">
+		<button type="button" id="btnAddNhaCungCapResetFilter" class="buttonX">x</button>
+		<button type="submit" class="w3-green submit" id="btnAddNhaCungCapFilter">Filter</button>
+	</div>
+</div>
+
+<div class="w3-responsive">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+		  	<tr class="w3-blue">
+				<th>STT</th>
+				<th><a class="orderColumn" onclick="orderByAddNhaCungCap(this)">Tên Nhà Cung Cấp
+					<input type="hidden" name="tenNhaCungCap" value="tenNhaCungCap ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddNhaCungCap(this)">Địa Chỉ
+					<input type="hidden" name="diaChi" value="diaChi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddNhaCungCap(this)">Liên Hệ
+					<input type="hidden" name="lienHe" value="lienHe ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddNhaCungCap(this)">Mô Tả
+					<input type="hidden" name="moTa" value="moTa ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddNhaCungCap(this)">Ghi Chú
+					<input type="hidden" name="ghiChu" value="ghiChu ASC">
+					</a>
+				</th>
+		  	</tr>
+		</thead>
+		<tbody id="addNhaCungCapTbody" class="tbody">
+			<?php
+				if ( count($page->items) ) {
+					
+					$stt = 1;
+					foreach ( $page->items as $nhacungcap ) {
+					?>
+						<tr>
+							<td data-label ='STT'><?= $stt + ($page->current - 1) * $page->limit; ?></td>
+							<td data-label ='Tên Nhà CC' class="tenNhaCungCap"><a href="#" onclick="chonAddNhaCungCap(this)" title="<?= $nhacungcap->id ?>" class="chonAddNhaCungCap"><?= $nhacungcap->tenNhaCungCap ?></a></td>
+							<td data-label ='Liên Hệ'><?= $nhacungcap->lienHe ?></td>
+							<td data-label ='Địa Chỉ' class="diaChi"><?= $nhacungcap->diaChi ?></td>
+							<td data-label ='Mô Tả' class="moTa"><?= $nhacungcap->moTa ?></td>
+							<td data-label ='Ghi Chú' class="ghiChu"><?= $nhacungcap->ghiChu ?></td>
+						</tr>
+					
+			<?php $stt++;	}} ?>
+		</tbody>
+	</table>
+</div>
+
+<?php
+if ( $page->total_pages > 0 ) { ?>
+	
+	<div class="w3-bar w3-center" id="paginationAddNhaCungCap">
+		<a href="#" title="<?= $page->first; ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)">&laquo;</a>
+		
+		<?php for ( $pageIndex = 1; $pageIndex <= $page->total_pages; $pageIndex++ ) {
+		
+			if ( $pageIndex == $page->current ) { ?>
+				<a href="#" title="<?= $pageIndex ?>" class="w3-button w3-hover-green w3-blue" onclick="paginationAjax(this)"><?= $pageIndex ?></a>
+			<?php } else {
+				?>
+				<a href="#" title="<?= $pageIndex ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)"><?= $pageIndex ?></a>
+			<?php
+			}
+		}
+		?>
+		
+		<a href="#" title="<?= $page->last; ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)">&laquo;</a>
+		
+		( <?= $page->current ?> of <?= $page->total_pages ?> )
+		
+	</div>
+
+<?php } ?>
+<?= $this->tag->javascriptInclude('js/js-list-nhacungcap.js') ?>

@@ -1,0 +1,48 @@
+<div class="w3-main w3-container">
+    <form action="" method="post" accept-charset="utf-8">
+	  <div class="overflowHidden">
+        <div class="form-group">    
+          <label class="w3-text-green"><b>Tên khách hàng <span class="required">(*)</span></b></label>
+          <?php echo $form->render('tenKhachHang', array('class' => 'w3-input w3-border validateFiled')); ?>
+        </div>
+        <div class="form-group">     
+          <label class="w3-text-green"><b>Địa Chỉ (Nên nhập địa chỉ xuất hóa đơn)</b></label>
+          <?php echo $form->render('diaChi', array('class' => 'w3-input w3-border')); ?>
+        </div>
+		
+		<div>
+			<div class="w3-third">
+				<div class="form-group row-inline">    
+				  <label class="w3-text-green"><b>Mã Số Thuế</b></label>
+				  <?php echo $form->render('mST', array('class' => 'w3-input w3-border')); ?>
+				</div>
+				<div class="form-group row-inline">      
+				  <label class="w3-text-green"><b>Số Điện Thoại</b></label>
+				  <?php echo $form->render('soDienThoai', array('class' => 'w3-input w3-border')); ?>
+				</div>
+				<div class="form-group row-inline">     
+				  <label class="w3-text-green"><b>Email</b></label>
+				  <?php echo $form->render('email', array('class' => 'w3-input w3-border')); ?>
+				</div>
+			</div>
+			<div class="w3-third padding-right-left">
+				<div class="form-group">      
+				  <label class="w3-text-green"><b>Người Mua Hàng</b></label>
+				  <?php echo $form->render('nguoiMuaHang', array('class' => 'w3-input w3-border')); ?>
+				</div>
+				<div class="form-group row-inline">     
+				  <label class="w3-text-green"><b>Loại Khách Hàng</b></label>
+				  <?php echo $form->render('loaiKhachHang', array('class' => 'w3-input w3-border validateFiled')); ?>
+				</div>
+			</div>
+			<div class="w3-third">
+				<div class="form-group">     
+				  <label class="w3-text-green"><b>Ghi Chú</b></label>
+				  <?php echo $form->render('ghiChu', array('class' => 'w3-input w3-border')); ?>
+				</div>
+			</div>
+		</div>
+      </div>
+	  <div class="w3-section"><button id="submit" class="w3-btn w3-green">Đăng ký</button></div>
+	</form>
+</div>

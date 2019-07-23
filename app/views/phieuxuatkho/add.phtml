@@ -1,0 +1,87 @@
+<div class="w3-main">
+	<div id="customersModal" class="w3-modal">
+		<div class="w3-modal-content">
+		  <div class="w3-container">
+			<span onclick='$("#customersModal").hide()' class="w3-button w3-display-topright">&times;</span>
+			<input type="hidden" id="listCustomerLink" value="<?php echo $this->url->get('customers/list') ?>" />
+			<div id="customersTable">
+			xxxx
+			</div>
+		  </div>
+		</div>
+	</div>
+	<div id="listProductsModal" class="w3-modal">
+		<div class="w3-modal-content">
+			<div class="w3-container">
+				<span onclick='$("#listProductsModal").hide()' class="w3-button w3-display-topright">&times;</span>
+				<input type="hidden" id="listProductsLink" value="<?php echo $this->url->get('products/list') ?>" />
+				<div id="listProductsTable">
+					xxxx
+				</div>
+			</div>
+		</div>
+   </div>
+
+    <form action="" method="post" accept-charset="utf-8" id="formAddPhieuXuatKho">
+		<input type="hidden" value="<?= $this->url->get('products/ajaxProduct') ?>" id="addLinkSendAjax">
+    		
+    		<div class="row w3-row-padding">
+
+    			<?php echo $form->render('idNguoiLapPhieu', array('value' => $user['id'])); ?>
+				<?php echo $form->render('idNguoiXacNhan', array('value' => '0')); ?>
+
+	    		<div class="w3-col l2 m4">
+	    			<label class="w3-text-green"><b>Lý Do Xuất <span class="required">(*)</span></b></label>
+		          	<?php echo $form->render('lyDoXuat', array('class' => 'w3-input w3-border validateFiled')); ?>
+	    		</div>
+	    		<div class="w3-col l3 m4 addOrder_tenKhachHang">
+	    			<label class="w3-text-green"><b>Tên Khách Hàng <span class="required">( * )</span></b></label>
+		          	<?php echo $form->render('tenKH', array('class' => 'w3-input w3-border displayInline tenKhachHang validateFiled')); ?>
+		          	<button id="btnChonKhachHang" type="button" class="buttonX w3-green w3-hover-gray w3-hide"><i class="fa fa-search" aria-hidden="true"></i></button>
+	    		</div>
+	    		<div class="w3-col l2 m4">
+	    			<label class="w3-text-green"><b>Địa Chỉ <span class="required">( * )</span></b></label>
+		          	<?php echo $form->render('diaChi', array('class' => 'w3-input w3-border diaChiGiaoHang validateFiled')); ?>
+	    		</div>
+	    		<div class="w3-col l2 m4">
+	    			<label class="w3-text-green"><b>Người Nhận</b></label>
+		          	<?php echo $form->render('nguoiNhan', array('class' => 'w3-input w3-border thongTinNguoiNhanHang')); ?>
+	    		</div>
+				<div class="w3-col l1 m4">
+	    			<label class="w3-text-green"><b>Tổng Số Lượng</b></label>
+		          	<?php echo $form->render('tongSoLuong', array('class' => 'w3-input w3-border ', 'value' => '0' , 'readonly' => true)); ?>
+    			</div>
+    			<div class="w3-col l6 m8">
+    				<label class="w3-text-green"><b>Ghi Chú</b></label>
+		          	<?php echo $form->render('ghiChu', array('class' => 'w3-input w3-border')); ?>
+    			</div>
+				<br>
+               
+               <table id="addTable" class="w3-table-all w3-bordered w3-border w3-margin-top w3-margin-bottom">
+                    <thead>
+                        <tr class="w3-red">
+                        	<th>STT</th>
+                           	<th>Mã SP</th>
+                           	<th>Tên Sản Phẩm</th>
+                           	<th>Tồn Đầu Kỳ</th>
+                           	<th>Số Lượng Xuất</th>
+                           	<th>Ghi Chú</th>
+                           	<th>Tồn Cuối Kỳ</th>
+                           	<th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="addMaSanPham">
+                            <td class="stt-add">1</td>
+                            <td colspan="7">
+                            	<input type="text" id="addMaSanPham" value="" placeholder="Nhập mã sản phẩm">
+                            	<button id="btnChonSanPham" type="button" class="w3-green w3-hover-gray"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+               </table>
+               <br>
+    		</div>
+  		<div class="w3-section"><button id="submit" class="addNew w3-btn w3-green">Đăng ký</button></div>
+	</form>
+</div>

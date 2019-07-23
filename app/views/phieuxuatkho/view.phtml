@@ -1,0 +1,74 @@
+<div class="w3-main w3-container notIn">
+    <h3 class="title-admin w3-center">XEM PHIẾU XUẤT KHO</h3>
+    <?= $this->flashSession->output(); ?>
+
+	<div class="row w3-row-padding">
+
+		<div class="w3-col l1 m4">
+			<label class="w3-text-green"><b>Lý Do Xuất <span class="required">(*)</span></b></label>
+			<input type="text" name="lyDoXuat" value="<?= $PhieuXuatKho->lyDoXuat ?>" class="w3-input w3-border" readonly="1">
+		</div>
+		<div class="w3-col l3 m4 addOrder_tenKhachHang">
+			<label class="w3-text-green"><b>Tên Khách Hàng <span class="required">( * )</span></b></label>
+			<input type="text" name="tenKH" value="<?= $PhieuXuatKho->tenKH ?>" class="w3-input w3-border" readonly="1">
+		</div>
+		<div class="w3-col l2 m4">
+			<label class="w3-text-green"><b>Địa Chỉ <span class="required">( * )</span></b></label>
+			<input type="text" name="diaChi" value="<?= $PhieuXuatKho->diaChi ?>" class="w3-input w3-border" readonly="1">
+		</div>
+		<div class="w3-col l2 m4">
+			<label class="w3-text-green"><b>Người Nhận</b></label>
+			<input type="text" name="nguoiNhan" value="<?= $PhieuXuatKho->nguoiNhan ?>" class="w3-input w3-border" readonly="1">
+		</div>
+		<div class="w3-col l1 m4">
+			<label class="w3-text-green"><b>Tổng Số Lượng</b></label>
+			<input type="number" name="tongSoLuong" value="<?= $PhieuXuatKho->tongSoLuong ?>" class="w3-input w3-border " readonly="1">
+		</div>
+    <div class="w3-col l6 m8">
+      <label class="w3-text-green"><b>Ghi Chú</b></label>
+      <textarea id="ghiChu" name="ghiChu" class="w3-input w3-border" readonly="1"><?= $PhieuXuatKho->ghiChu ?></textarea>
+    </div>
+
+		<br>
+               
+       <table id="addTable" class="w3-table-all w3-bordered w3-border w3-margin-top w3-margin-bottom">
+            <thead>
+                <tr class="w3-red">
+                	<th>STT</th>
+                   	<th>Mã SP</th>
+                   	<th>Tên Sản Phẩm</th>
+                   	<th>Tồn Đầu Kỳ</th>
+                   	<th>Số Lượng Xuất</th>
+                   	<th>Ghi Chú</th>
+                   	<th>Tồn Cuối Kỳ</th>
+                   	<th>Tồn Hiện Tại</th>
+                </tr>
+            </thead>
+            <tbody>
+            	<?php 
+            		$i = 0;
+
+                	foreach ($ctPhieuXuatKho as $value) :?>
+                    		
+                    	<tr class="addTrTable">
+							<td><?= $i + 1 ?></td>
+							<td><?= $value->Products->maSanPham ?></td>
+							<td><?= $value->Products->tenSanPham ?></td>
+							<td><?= $value->tonDauKy ?></td>
+                          	<td><input type="number" class="soLuong" name="soLuong" value="<?= $value->soLuong ?>" readonly="1"></td>
+                          	<td><input class="ghiChu" type="text" name="ghiChuCtphieuXuatKho" value="<?= $value->ghiChu ?>" readonly="1"></td>
+                          	<td><?= $value->tonCuoiKy ?></td>
+							<td><?= $value->Products->tonHienTai ?></td>
+                         </tr>
+
+            	<?php 
+                	$i++;
+                	endforeach; 
+                ?>
+            </tbody>
+       </table>
+       <br>
+
+       <a href="<?= $this->url->get('phieuxuatkho/index?activeTab=search') ?>" class="w3-button w3-green">Quay Lại</a>
+	</div>
+</div>

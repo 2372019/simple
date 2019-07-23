@@ -1,0 +1,131 @@
+<div id="listProductsModal" class="w3-modal">
+	<div class="w3-modal-content">
+		<div class="w3-container">
+			<span onclick='$("#listProductsModal").hide()' class="w3-button w3-display-topright">&times;</span>
+			<input type="hidden" id="listProductsLink" value="<?php echo $this->url->get('products/list') ?>" />
+			<div id="listProductsTable">
+				xxxxsdfsdf
+			</div>
+		</div>
+	</div>
+</div>
+<div class="w3-main w3-container" style="margin-top: 30px">
+
+	<?= $this->flashSession->output(); ?>
+	<?= $this->getContent(); ?>
+	 
+    <form action="" method="post" accept-charset="utf-8">
+		<input type="hidden" value="<?= $this->url->get('products/ajaxProduct') ?>" id="addLinkSendAjax">
+		<div class="padding-bottom10px overflowHidden w3-section">
+			<div class="w3-col l6">
+				<div class="row">
+					<div class="w3-col l3 padding-right10px">
+						<label class="w3-text-green"><b>Mã Sản Phẩm <span class="required">( * )</span></b></label>
+						<?php echo $form->render('maSanPham', array('class' => 'w3-input w3-border validateFiled')); ?>
+					</div>
+					<div class="w3-col l3 padding-right10px">
+						<label class="w3-text-green"><b>Loại Sản Phẩm <span class="required">( * )</span></b></label>
+						<?php echo $form->render('loaiSanPham', array('class' => 'w3-input w3-border validateFiled')); ?>
+						
+					</div>
+					<div class="w3-col l6 padding-right10px">
+						<label class="w3-text-green"><b>Tên Sản Phẩm <span class="required">( * )</span></b></label>
+						<?php echo $form->render('tenSanPham', array('class' => 'w3-input w3-border validateFiled')); ?>
+					</div>
+					<div class="w3-col l3 padding-right10px">
+						<label class="w3-text-green"><b>Đơn Giá Bán</b></label>
+						<input type="text" id="donGiaMoiNhat" name="donGiaMoiNhat" value="<?= number_format($product->donGiaMoiNhat); ?>" class="w3-input w3-border keyUpFormatAmount replacePrice">
+					</div>
+					<?php if ($user['permission'] == 'Admin'): ?>
+						<div class="w3-col l3 padding-right10px">
+							<label class="w3-text-green"><b>Đơn Giá Gốc</b></label>
+							<input type="text" id="donGiaMuaVao" name="donGiaMuaVao" value="<?= number_format($product->donGiaMuaVao); ?>" class="w3-input w3-border keyUpFormatAmount replacePrice">
+						</div>
+					<?php endif ?>
+					<div class="w3-col l3 padding-right10px padding-top10px">
+						<label class="w3-text-green"><b>Tồn Kho Ban Đầu: </label><?= $product->tonKhoBanDau; ?>
+					</div>
+					<div class="w3-col l3 padding-right10px padding-top10px">
+						<span class="w3-text-green"><b>Tồn Kho H.Tại:</b></span>
+						<span id="tonHienTai"><?= $product->tonHienTai; ?></span>
+					</div>
+				</div>
+			</div>
+			<div class="w3-col l6">
+				<label class="w3-text-green"><b>Mô tả</b></label>
+		          <?php echo $form->render('moTa', array('class' => 'w3-input w3-border ckfinder', "rows" => "4")); ?>
+			</div>
+			<div class="w3-col">
+				<label for="">Nổi Bật</label>
+				<input type="checkbox" name="noiBat" id="noiBat" value="1" class="w3-check" <?= $product->noiBat == "1" ? "checked" : "" ?>>
+			</div>
+		</div>
+		
+		<table id="addTable" class="w3-table-all w3-bordered w3-border">
+            <thead>
+                <tr class="w3-red">
+					<th>STT</th>
+					<th>Mã SP</th>
+					<th>Tên Sản Phẩm</th>
+					<th>SL</th>
+					<th>Giá Bán</th>
+					<th>Giá Gốc</th>
+					<th>Tồn H.Tại</th>
+					<th>Tồn B.Đầu</th>
+					<th>Loại Sản Phẩm</th>
+					<th>Mô tả</th>
+                   	<th>Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+			
+				<?php $i=1; ?>
+                <?php foreach ($ctproducts as $key => $value): ?>
+ 
+                    <tr class="addTrTable">
+                        <input class="idCtProductsList" type="hidden" name="idCtProductsList[]" value="<?= $value->id ?>">
+                        <input class="idProducts" type="hidden" name="idProducts[]" value="<?= $value->idProductsVatTu ?>">
+                        <td class="stt"><?= $i ?></td>
+                        <td><?= $value->Vattu->maSanPham ?></td>
+                        <td class="tenSP"><?= $value->Vattu->tenSanPham ?></td>
+						<td><input type="number" class="soLuong" name="soLuong[]" value="<?= $value->soLuongVatTu ?>"></td>
+						
+						<td><?= $value->Vattu->donGiaMoiNhat ?></td>
+						<td><?= $value->Vattu->donGiaMuaVao ?></td>
+						<td><?= $value->Vattu->tonHienTai ?></td>
+						<td><?= $value->Vattu->tonKhoBanDau ?></td>
+						<td><?= $value->Vattu->LoaiSanPham->type ?></td>
+						<td><?= $value->Vattu->moTa ?></td>
+                        
+                        <td><a href="#" title="Xóa sản phẩm này" class="w3-text-red" onclick="deleteTr(this)">✘</a></td>
+                        <?php $i++ ?>
+                    </tr>
+                <?php endforeach ?>
+				
+				
+                <tr class="addMaSanPham">
+                    <td class="stt-add">1</td>
+                    <td colspan="10">
+                    	<input type="text" id="addMaSanPham" value="" placeholder="Nhập mã sản phẩm">
+                    	<button id="btnChonSanPham" type="button" class="w3-green w3-hover-gray"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+       	</table>
+	<div class="padding-top10px"><br /><button id="submit" class="w3-btn w3-green padding-top10px">Save</button></div>
+    </form>
+</div>
+
+<script>
+	var editor = CKEDITOR.replace('moTa',{
+          language:'vi',
+          filebrowserBrowseUrl : <?= '"'.preg_replace('/public([\/\\\\])index.php$/', '', $_SERVER["PHP_SELF"]).'public/ckfinder/ckfinder.php' .'"' ?>,
+
+          filebrowserImageBrowseUrl : <?= '"'.preg_replace('/public([\/\\\\])index.php$/', '', $_SERVER["PHP_SELF"]).'public/ckfinder/ckfinder.html?type=imgCKfinder' .'"' ?>,
+           
+          filebrowserUploadUrl : <?= '"'.preg_replace('/public([\/\\\\])index.php$/', '', $_SERVER["PHP_SELF"]).'public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files' .'"' ?>,
+           
+          filebrowserImageUploadUrl : <?= '"'.preg_replace('/public([\/\\\\])index.php$/', '', $_SERVER["PHP_SELF"]).'public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=imgCKfinder' .'"' ?>,
+    });
+
+</script>

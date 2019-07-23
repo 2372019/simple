@@ -1,0 +1,105 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+	<input type="hidden" value="<?= $this->url->get('customers/index') ?>" id="linkIndex">
+	<input type="hidden" value="<?= $this->url->get('customers/ajaxSearch') ?>" id="linkSendAjax">
+	<input type="hidden" value="<?= $this->url->get('customers/edit/') ?>" id="linkEdit">
+	<input type="hidden" value="<?= $this->url->get('customers/delete/') ?>" id="linkDelete">
+	<div class="w3-col l2 m4 s2 filter-limit">
+		
+		<span class="name-filter">Limit:</span>
+		
+		<?php 
+		$limtSelector = new Phalcon\Forms\Element\Select('limit', [
+				"25" 		=> "25",
+				"50"  		=> "50",
+				"100"  		=> "100",
+				"200" 		=> "200",
+				"500" 		=> "500",
+				"1000" 		=> "1,000",
+		], ['using'    => ["id", "name"] ]);
+		
+		$limtSelector->setDefault($limit);
+		
+		echo $limtSelector->render();
+		?>
+	</div>
+	<div class="w3-col l5 m8 s10 filter-search">
+		<span class="name-filter">Filter: </span>
+		<input type="search" name="filterRows" value="<?= $filterRows; ?>" placeholder="Search this table">
+		<button type="button" id="btnResetFilter" class="buttonX">x</button>
+		<button type="submit" class="w3-green submit" id="btnFilter">Filter</button>
+	</div>
+	<div class="w3-col l5 filter-date">
+		<span class="name-filter">Ngày: </span>
+		<input type="date" name="dateStart" value="<?= date("Y-m-d") ?>">
+		<input type="date" name="dateEnd" value="<?= date("Y-m-d") ?>">
+		<button type="button" class="w3-green submit" id="btnDate">Gửi</button>
+	</div>
+</div>
+
+<div class="w3-responsive" id="drag-scroll">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+		  	<tr class="w3-blue">
+				<th>STT</th>
+				<?php if ($this->view->duocXoa) { echo "<th>Xóa</th>";} ?>
+				<th><a class="orderColumn width200px" onclick="orderBy(this)">Tên khách hàng
+					<input type="hidden" name="tenKhachHang" value="tenKhachHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Mã Số Thuế
+					<input type="hidden" name="mST" value="mST ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width200px" onclick="orderBy(this)">Số Đơn Hàng
+					<input type="hidden" name="soDonHang" value="soDonHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width200px" onclick="orderBy(this)">Tổng Công Nợ
+					<input type="hidden" name="congNo" value="congNo ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width200px" onclick="orderBy(this)">Địa Chỉ
+					<input type="hidden" name="diaChi" value="diaChi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Số Điện Thoại
+					<input type="hidden" name="soDienThoai" value="soDienThoai ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderBy(this)">Email
+					<input type="hidden" name="email" value="email ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width100px" onclick="orderBy(this)">Người Mua Hàng
+					<input type="hidden" name="nguoiMuaHang" value="nguoiMuaHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width100px" onclick="orderBy(this)">Loại Khách Hàng
+					<input type="hidden" name="loaiKhachHang" value="loaiKhachHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width150px" onclick="orderBy(this)">Ghi Chú
+					<input type="hidden" name="ghiChu" value="ghiChu ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width100px" onclick="orderBy(this)">Ngày
+					<input type="hidden" name="ngay" value="ngay ASC">
+					</a>
+				</th>
+		  	</tr>
+		</thead>
+		<tbody class="tbody">
+		
+		</tbody>
+
+		<tfoot>
+	        <tr>
+	            <td colspan="12" align="right">
+					<div class="w3-bar w3-center" id="pagination">
+						
+					</div>
+	            </td>
+	        </tr>
+	    </tfoot>
+	</table>
+</div>

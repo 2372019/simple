@@ -1,0 +1,86 @@
+<?= $this->flashSession->output(); ?>
+<?= $this->getContent(); // Thông báo lỗi chung?>
+
+<div id="page-index">
+
+	<div class="row">
+		<div class="w3-col l4 m6 w3-margin-bottom">
+			<div class="statistic">
+				<h3>Phát Sinh Trong Ngày</h3>
+
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('orders/index?today='.date("Y-m-d").'') ?>" title="">Số Đơn Hàng</a></li>
+					<li class="w3-right-align"><span class="counter"><?= $countDonHangNow ?></span></li>
+				</ul>
+
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('orders/index?today='.date("Y-m-d").'') ?>" title="">Doanh Thu Có VAT</a></li>
+					<li class="w3-right-align"><span class="counter"><?= number_format($sumDonHangNow) ?></span></li>
+				</ul>
+				
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('quanlythuchi/index?todaythucthu='.date("Y-m-d").'') ?>" title="">Thu từ bán hàng</a></li>
+					<li class="w3-right-align"><span class="counter"><?= number_format($thuBanHangToday); ?></span></li>
+				</ul>
+				
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('quanlythuchi/index?todaythucthu='.date("Y-m-d").'') ?>" title="">Nợ từ bán hàng</a></li>
+					<li class="w3-right-align"><span class="counter"><?= number_format($sumDonHangCNNow) ?></span></li>
+				</ul>
+
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('quanlythuchi/index?todaythucthu='.date("Y-m-d").'') ?>" title="">Tổng Thu</a></li>
+					<li class="w3-right-align"><span class="counter"><?= number_format($sumThucThuNow) ?></span></li>
+				</ul>
+
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('quanlythuchi/index?todaythucchi='.date("Y-m-d").'') ?>" title="">Tổng Chi</a></li>
+					<li class="w3-right-align"><span class="counter"><?= number_format($sumThucChiNow) ?></span></li>
+				</ul>
+
+			</div>
+		</div>
+
+		<div class="w3-col l4 m6 w3-margin-bottom">
+			<div class="statistic">
+				<h3>Đơn hàng ĐXL</h3>
+
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('donhangdxl/index?trangthai=choThanhToan') ?>">ĐH Chờ Thanh Toán</a></li>
+					<li class="w3-right-align"><span class="counter"><?= $countDonHangCTT ?></span></li>
+				</ul>
+
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('donhangdxl/index') ?>" title="">ĐH Đang Xử Lý</a></li>
+					<li class="w3-right-align"><span class="counter"><?= $countDonHangDXL ?></span></li>
+				</ul>
+
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('donhangdxl/index?trangthai=choXacNhan') ?>" title="">Đ.H Chờ Xác Nhận</a></li>
+					<li class="w3-right-align"><span class="counter"><?= $countDonHangCXN ?></span></li>
+				</ul>
+
+			</div>
+		</div>
+
+		<div class="w3-col l4 m6 w3-margin-bottom">
+			<div class="statistic">
+				<h3>Thống Kê</h3>
+
+				<ul class="val-statistic two-part">
+					<li><a href="<?= $this->url->get('donhangdxl/index?trangthai=conNo') ?>" title="">Tổng Công Nợ</a></li>
+					<li class="w3-right-align"><span class="counter"><?= number_format($sumDonHangCN) ?></span></li>
+				</ul>
+				
+			</div>
+		</div>
+
+	</div>
+
+	<div class="space"></div>
+
+	<div class="row w3-row-padding">
+		<?= $this->elements->indexGoController() ?>
+	</div>
+
+</div>

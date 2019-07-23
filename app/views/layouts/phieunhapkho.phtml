@@ -1,0 +1,17 @@
+<?= $this->elements->getNavTabs("phieunhapkho", $activeTab) ?>
+
+<?= $this->getContent(); ?>
+
+<?= $this->elements->getTabs("phieunhapkho", $activeTab) ?>
+
+<div id="listProductsModal" class="w3-modal">
+	<div class="w3-modal-content">
+		<div class="w3-container">
+			<span onclick='$("#listProductsModal").hide()' class="w3-button w3-display-topright">&times;</span>
+			<input type="hidden" id="listProductsLink" value="<?php echo $this->url->get('products/list') ?>" />
+			<div id="listProductsTable">
+				xxxx
+			</div>
+		</div>
+	</div>
+</div>

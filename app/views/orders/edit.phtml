@@ -1,0 +1,400 @@
+<div class="w3-main w3-container notIn">
+    <input type="hidden" id="linkSendPhieuThu" name="" value="<?php echo $this->url->get('orders/phieuThuAjax') ?>">
+    <?= $this->flashSession->output(); ?>
+
+    <div class="w3-responsive">
+		<div id="customersModal" class="w3-modal">
+			<div class="w3-modal-content">
+    			<div class="w3-container">
+        			<span onclick='$("#customersModal").hide()' class="w3-button w3-display-topright">&times;</span>
+        			<input type="hidden" id="listCustomerLink" value="<?php echo $this->url->get('customers/list') ?>" />
+        			<div id="customersTable">
+        				xxxx
+        			</div>
+    			</div>
+			</div>
+		</div>
+		<div id="listProductsModal" class="w3-modal">
+			<div class="w3-modal-content">
+				<div class="w3-container">
+					<span onclick='$("#listProductsModal").hide()' class="w3-button w3-display-topright">&times;</span>
+					<input type="hidden" id="listProductsLink" value="<?php echo $this->url->get('products/list') ?>" />
+					<div id="listProductsTable">
+					xxxx
+					</div>
+				</div>
+			</div>
+	    </div>
+        <form action="" method="post" accept-charset="utf-8">
+            <input type="hidden" value="<?= $this->url->get('products/ajaxProduct') ?>" id="addLinkSendAjax">
+            <div class="w3-row-padding">
+
+                <div class="w3-col l2">
+                    <label class="w3-text-green"><b>Tên Khách Hàng <span class="required">(*)</span></b></label>
+     			    <div class="addOrder_tenKhachHang">
+     				   <?php echo $form->render('idKhachHang', array('class' => 'w3-input w3-border idKhachHang validateFiled')); ?>
+     				   <?php echo $form->render('tenKhachHang', array( 'class' => 'w3-input displayInline w3-border w3-light-gray tenKhachHang', 'value'=>$order->Customers->tenKhachHang ) ); ?>
+					   
+     				   <button id="btnChonKhachHang" type="button" class="buttonX w3-green w3-hover-gray"><i class="fa fa-search" aria-hidden="true"></i></button>
+     			    </div>
+                </div>
+
+                <div class="w3-col l2">
+                    <label class="w3-text-green"><b>Địa Chỉ Giao hàng</b></label>
+                    <?php echo $form->render('diaChiGiaoHang', array('class' => 'w3-input w3-border diaChiGiaoHang')); ?>
+                </div>
+
+                <div class="w3-col l3">    
+                  <label class="w3-text-green"><b>Thông Tin Ng Nhận Hàng</b></label>
+                  <?php echo $form->render('thongTinNguoiNhanHang', array('class' => 'w3-input w3-border thongTinNguoiNhanHang')); ?>
+               </div>
+
+                <div class="w3-col l1">
+                    <label class="w3-text-green"><b>Thanh Toán</b></label>
+                    <?php echo $form->render('hinhThucThanhToan', array('class' => 'w3-input w3-border validateFiled')); ?>
+                </div>
+
+                <div class="w3-col l1">  
+                    <label class="w3-text-green"><b>Trạng Thái</b></label>
+                    <?php echo $form->render('trangThai', array('class' => 'w3-input w3-border validateFiled')); ?>
+                </div>
+
+                <div class="w3-col l1">  
+                    <label class="w3-text-green"><b>CTy Bán <span class="required">(*)</span></b></label>
+                    <?php echo $form->render('idCongTyBanHang', array('class' => 'w3-input w3-border validateFiled')); ?>
+                </div>
+
+                <div class="w3-col l1">
+                    <label class="w3-text-green"><b>Ng Giao <span class="required">(*)</span></b></label>
+                    <?php echo $form->render('idEmployees', array('class' => 'w3-input w3-border validateFiled')); ?>
+                </div>
+
+                <div class="w3-col l1">
+                    <label class="w3-text-green"><b>C.P Giao Hàng</b></label>
+                    <input type="text" id="chiPhiGiaoHang" name="chiPhiGiaoHang" value="<?= number_format($order->chiPhiGiaoHang) ?>" class="w3-input w3-border keyUpFormatAmount replacePrice">
+                </div>
+ 
+            </div>
+            <br>
+               
+            <table id="addTable" class="w3-table-all w3-bordered w3-border">
+                <thead>
+                    <tr class="w3-red">
+                        <th>STT</th>
+                        <th>Mã SP</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Số Lượng</th>
+                        <th>Đơn Giá</th>
+                        <th>Thành Tiền</th>
+                        <th>Ghi Chú</th>
+                        <th>Tồn Kho</th>
+                        <th>Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php $i=1; ?>
+                <?php foreach ($ctorders as $key => $value): ?>
+                	<?php 
+                		$mota = '<strong>'.$value->Products->tenSanPham.'</strong><br>'.$value->Products->moTa; 
+                	 ?>  
+                    <tr class="addTrTable">
+                        <input class="idCtorders" type="hidden" name="idCtorders[]" value="<?= $value->id ?>">
+
+                        <input class="idProducts" type="hidden" name="idProducts[]" value="<?= $value->idProducts ?>">
+
+                        <input class="moTaProducts" type="hidden" value="<?= $mota ?>">
+
+                        <td class="stt"><?= $i ?></td>
+
+                        <td><?= $value->Products->maSanPham ?></td>
+
+                        <td class="tenSP"><?= $value->Products->tenSanPham ?></td>
+
+                        <td><input type="number" class="soLuong" name="soLuong[]" value="<?= $value->soLuong ?>" onchange="changeSoLuong(this)" <?= ($order->xuatKho != 1) ? '' : 'readonly' ?> ></td>
+
+                        <td><input class="donGiaMoiNhat w3-right-align" type="text" name="donGiaMoiNhat[]" value="<?= number_format($value->donGia) ?>" onchange="changeDonGiaMoiNhat(this)" <?= ($order->xuatKho != 1) ? '' : 'readonly' ?> ></td>
+
+                        <td class="thanhTien w3-right-align"><?= number_format($value->thanhTien) ?></td>
+
+                        <td><input class="ghiChu" type="text" name="ghiChuCtorders[]" value="<?= $value->ghiChu ?>" <?= ($order->xuatKho != 1) ? '' : 'readonly' ?> ></td>
+
+                        <td><?= $value->Products->tonHienTai ?></td>
+
+                        <?php if ($order->xuatKho != 1): ?>
+                            <td><a href="#" title="Xóa sản phẩm này" class="w3-text-red" onclick="deleteTr(this)">✘</a></td>
+                        <?php endif ?>
+                        
+                        <?php $i++ ?>
+                    </tr>
+                <?php endforeach ?>
+
+                    <?php if ($order->xuatKho != 1): ?>
+                        <tr class="addMaSanPham">
+                            <td class="stt-add">1</td>
+                            <td colspan="8">
+                                <input type="text" id="addMaSanPham" name="addMaSanPham" value="" placeholder="Nhập mã sản phẩm">
+                                <button id="btnChonSanPham" type="button" class="w3-green w3-hover-gray"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                    <?php endif ?>
+                    
+                    <tr>
+                        <td colspan="6">
+                            <label for="">Xuất Hóa Đơn</label> 
+    					    <input type="checkbox" id="coXuatHoaDonKhong" name="coXuatHoaDonKhong" value="1" class="w3-check" <?= $order->coXuatHoaDonKhong == "1" ? "checked" : "" ?> >
+                        </td>
+                        <td>Tổng Cộng Chưa VAT:</td>
+                        <td colspan="2">
+                            <input type="text" name="tongCongChuaVAT" class="w3-right-align" value="<?= number_format($order->tongCongChuaVAT); ?>" id="tongCongChuaVAT" readonly="readonly">
+                        </td>
+                    </tr>
+                    <tr class="thuevat" style="<?= ($order->coXuatHoaDonKhong == 0)? "display: none" : "" ?>">
+                        <td colspan="2"></td>
+                        <td>Ngày Xuất HĐ:</td>
+                        <td><?php echo $form->render('ngayXuatHoaDon', array( 'class' => 'w3-input w3-border', 'value' => date('Y-m-d'))); ?></td>
+                        <td>Số HĐ:</td>
+                        <td><?php echo $form->render('soHoaDon', array('class' => 'w3-input w3-border' ,)); ?></td>
+                        <td>Thuế VAT:</td>
+                        <td colspan="2">
+                            <input class="w3-right-align" type="text" name="thueVAT" value="<?= number_format($order->thueVAT); ?>" id="thueVAT" readonly="readonly">
+                        </td>
+                    </tr>
+                    <tr class="sum">
+                        <td colspan="6"></td>
+                        <td>Tổng Tiền:</td>
+                        <td colspan="2">
+                            <input class="w3-right-align" type="text" name="tongTienThanhToan" value="<?= number_format($order->tongTienThanhToan); ?>" id="tongTienThanhToan" readonly="readonly">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+			    
+            <div class="w3-row-padding">
+					
+                <div class="w3-col l2">
+                    <label class="w3-text-green"><b>Đã Thanh Toán</b></label>
+                    <input type="text" id="daThanhToan" name="daThanhToan" value="<?= number_format($order->daThanhToan) ?>" class="w3-input w3-border keyUpFormatAmount replacePrice" readonly="true">
+                </div>
+
+                <div class="w3-col l2">
+                    <label class="w3-text-green"><b>Công Nợ</b></label>
+                    <input type="text" id="congNo" name="congNo" value="<?= number_format($order->congNo) ?>" class="w3-input w3-border keyUpFormatAmount replacePrice" readonly="true">
+                </div>
+
+                <div class="w3-col l2">
+                    
+                    <label class="w3-text-green"><b>Ngày Hẹn T.Toán</b></label>
+                    <?php echo $form->render('ngayHenThanhToan', array('class' => 'w3-input w3-border ','value'=>date('Y-m-d'))); ?>
+                </div>
+
+				<div class="w3-col l1">
+					<label class="w3-text-green"><b>Hoa Hồng</b></label>
+                    <input type="text" id="hoaHong" name="hoaHong" value="<?= number_format($order->hoaHong) ?>" class="w3-input w3-border keyUpFormatAmount replacePrice">
+				</div>
+				
+				
+    		    <div class="w3-col l5">
+    	            <label class="w3-text-green"><b>Ghi Chú</b></label>
+    				<?php echo $form->render('ghiChu', array('class' => 'w3-input w3-border')); ?>
+    		    </div>
+
+		    </div>
+
+            <div class="padding-top10px" style="clear: both;">
+                <button id="submit" class="w3-btn w3-green">Save</button>
+            </div>
+
+        </form>
+        
+        <?php if ($order->xuatKho != 1): ?>
+            <form action='<?= $this->url->get("phieuxuatkho/orderPhieuXuatKho/$order->id") ?>' method="post" id="formXuatKho" class=' w3-inline-block'>
+                <div class="padding-top10px">
+                  <button class="w3-btn w3-green" id="clickXuatKho">Xuất Kho</button>
+                </div>
+            </form>
+        <?php else: ?>
+            <div class="padding-top10px w3-inline-block">
+                <button class="w3-btn w3-green" disabled>Đã Xuất Kho</button>
+            </div>
+        <?php endif ?>
+
+        <div class="w3-margin-top print w3-inline-block">
+            <button type="button" class="w3-btn w3-green"  onclick="document.getElementById('modal-print').style.display='block'">Print</button>
+        </div>
+
+        <div id="modal-print" class="w3-modal" style="">
+            <div class="w3-modal-content w3-animate-zoom" style="width:500px">
+                <header class="w3-container w3-teal"> 
+                    <span onclick="document.getElementById('modal-print').style.display='none'" 
+                    class="w3-button w3-display-topright">&times;</span>
+                    <h2 class="w3-center">IN</h2>
+                </header>
+                <div class="w3-container">
+                    <div class="w3-panel w3-col l6 m6">
+						            <?php echo $form->render('idCongTyBanHang', array('class' => 'w3-input w3-border chonCT')); ?>
+                    </div>
+                    <div class="w3-center w3-panel w3-col l6 m6">
+                        <button type="button" id ="phieuthu" class="w3-btn w3-green w3-block padding-top10px padding-bottom10px">In Phiếu Thu</button>
+                        <button type="button" id ="xuatkho" class="w3-btn w3-green w3-panel w3-block padding-top10px padding-bottom10px">In Phiếu Xuất Kho</button>
+                        <button type="button" id ="giaohang" class="w3-btn w3-green w3-panel w3-block padding-top10px padding-bottom10px">In Phiếu Giao Hàng</button>
+                    </div>
+              </div>
+            </div>
+        </div>
+    </div><br /><br />
+	<a href="<?= $this->url->get('orders/index?activeTab=search') ?>" class="w3-button w3-gray">Quay Lại</a>
+</div>
+
+<!-- HTML THỰC HIỆN LỆNH IN -->
+
+<?php $ngay = "Ngày ".date("d")." Tháng ".date("m")." Năm ".date("Y"); ?>
+
+<div id="thuchienin">
+     <div id="header-print" class="w3-row">
+          <?php 
+
+          switch ($order->idCongTyBanHang) {
+            case 1:
+                echo '<div class="w3-col l3 m3 s3 w3-center hinh"><img src="/qlycty/img/tbt.png" alt="" style="width:100%"></div><div class="w3-col l9 m9 s9"><span class="w3-bold">CÔNG TY TNHH XNK SX TM THIẾT BỊ TỐT </span> <br><u>Headquarters</u>: 154/4/33 Nguyễn Phúc Chu, P.15, Q. Tân Bình, HCM <br><u>Office Add:</u> : Tầng M Cao ốc Pntechcons, 48 Hoa Sứ, P.7, Q. Phú Nhuận, HCM <br><u>Email</u> : thietbitot.vn@gmail.com  &nbsp; - &nbsp; Tel:&nbsp;08 6679 4228 </div>';
+                $kyten = 'Lê Như Ngọc';
+                break;
+            case 2:
+                echo '<div class="w3-col l3 m3 s3 w3-center hinh"><img src="/qlycty/img/yama.png" alt="" style="width:95%"></div><div class="w3-col l9 m9 s9"><span class="w3-bold" style="font-size: 18px">CÔNG TY TNHH YAMA MACHINE </span> <br><u>Địa Chỉ</u>: 04 Vạn Hạnh, P. Tân Thành, Q. Tân Phú, TP. Hồ Chí Minh <br><u>Văn Phòng:</u> : 212/22 Nguyễn Thiện Thuật, phường 3, Quận 3, Hồ Chí Minh <br><u>Điện Thoại:</u> (028) 6271 5879 – Hotline: 0906 393 567 - Email: info@yama.vn </div>';
+                break;
+            case 3:
+                echo '<div class="w3-col l3 m3 s3 w3-center hinh"><img src="/qlycty/img/nt.png" alt="" style="width:113px"></div><div class="w3-col l9 m9 s9"><span class="w3-bold" style="font-size: 18px">CÔNG TY TNHH CÔNG NGHIỆP NẶNG NT </span> <br><u>Headquarters</u>: 206/26/1 Huỳnh Thị Hai, KP4, P. Tân Chánh Hiệp, Q.12 <br><u>Email</u> : maynenkhi.nt@gmail.com &nbsp; - &nbsp; Tel: (028) 6271 5879 </div>';
+                $kyten = 'Nguyễn Ngọc Hà';
+                break;
+            default:
+                echo '<div class="w3-col l3 m3 s3 w3-center hinh"><img src="/qlycty/img/tv.png" alt="" style="width:95%"></div><div class="w3-col l9 m9 s9"><span class="w3-bold" style="font-size: 18px">CÔNG TY TNHH CÔNG NGHỆ DỊCH VỤ TÀI VIỆT </span> <br><u>Địa chỉ</u>: 04 Vạn Hạnh, P. Tân Thành, Q. Tân Phú <br><u>Điện Thoại</u> : 08 6679 4228 &nbsp; - &nbsp; Hotline: 0938 454 978 &nbsp; - &nbsp; Email:&nbsp;maynenkhi101@gmail.com </div>';
+                break;
+          }
+           ?>
+     </div>
+
+	<!-- IN PHIẾU THU -->
+     <div id="inphieuthu">
+          <h2 class="w3-center w3-bold">PHIẾU THU</h2>
+          <p class="w3-right-align ngay-thang"><?= $ngay ?></p>
+          <table style="width: 100%; border-spacing: 0 10px">
+               <tr>
+                    <td style="width: 100px; vertical-align: initial !important;">Khách hàng:</td>
+                    <td class="inTenKhachHang"></td>
+               </tr>
+               <tr>
+                    <td style="width: 100px; vertical-align: initial !important;">Địa chỉ:</td>
+                    <td class="inDiaChiKhachHang"></td>
+               </tr>
+               <tr>
+                    <td style="width: 100px; vertical-align: initial !important;">Lý do thu:</td>
+                    <td id="inLyDoThu"></td>
+               </tr>
+               <tr>
+                    <td style="width: 100px; vertical-align: initial !important;">Số tiền:</td>
+                    <td id="inTongTien"></td>
+               </tr>
+               <tr>
+                    <td style="width: 100px; vertical-align: initial !important;">Ghi chú:</td>
+                    <td id="inGhiChu"></td>
+               </tr>
+          </table>
+          <table style="width: 100%;">
+               <tr class="w3-center">
+                    <td><span class="w3-bold"> Người lập phiếu </span> <br> (Ký, họ tên)</td>
+                    <td><span class="w3-bold">Khách hàng </span><br> (Ký, họ tên)</td>
+                    <td><span class="w3-bold">Thủ kho </span><br> (Ký, họ tên)</td>
+                    <td><span class="w3-bold">Giám đốc </span><br> (Ký, họ tên, đóng dấu)</td>
+               </tr>
+               <tr class="w3-center">
+                    <td class="w3-padding-48"><span class="w3-bold kyten"><?php echo $kyten; ?></span></td>
+               </tr>
+          </table>
+     </div>
+
+	<!-- IN PHIẾU GIAO HÀNG -->
+     <div id="phieugiaohang">
+          <h2 class="w3-center w3-bold w3-margin-top">PHIẾU GIAO HÀNG</h2>
+          <p class="w3-right-align ngay-thang"><?= $ngay ?></p>
+          <table style="width: 100%; margin-top: 20px; border-spacing: 0 10px">
+               <tr>
+                    <td>Khách hàng:</td>
+                    <td class="inTenKhachHang"></td>
+               </tr>
+               <tr>
+                    <td>Địa chỉ nhận hàng:</td>
+                    <td class="inDiaChiKhachHang"></td>
+               </tr>
+               <tr>
+                    <td>Tên người nhận:</td>
+                    <td id="inThongTinKhachHang"></td>
+               </tr>
+          </table>
+          <table class="mat-hang">
+               <tr class="w3-center">
+                    <td><span class="w3-bold"> STT</span></td>
+                    <td><span class="w3-bold">Mặt hàng, Hồ sơ đi kèm.</span></td>
+                    <td><span class="w3-bold">Số lượng</span></td>
+                    <td><span class="w3-bold ">Ghi chú</span></td>
+               </tr>
+               <tbody id="inTablePhieuGiaoHang">
+               </tbody>
+          </table>
+          <p>- Phiếu giao hàng được lập thành 02 bản, mỗi bên giữ 01 bản có giá trị như nhau.</p>
+          <p>- Phiếu giao hàng này có giá trị trong việc xác nhận đã giao hàng và nghiệm thu hàng tại thời điểm.</p>
+          <table style="width: 100%; margin-top: 20px;" class="ky-ten w3-center">
+               <tr>
+                    <td><span class="w3-bold"> Nhân viên lập phiếu </span> <br> (Ký, họ tên)</td>
+                    <td><span class="w3-bold">Nhân viên giao hàng </span><br> (Ký, họ tên)</td>
+                    <td><span class="w3-bold">Đại diện bên khách hàng/Người mua hàng</span><br> (Ký, họ tên)</td>
+               </tr>
+               <tr class="w3-center">
+                    <td class="w3-padding-48"><span class="w3-bold kyten"><?php echo $kyten; ?></span></td>
+               </tr>
+          </table>  
+     </div>
+	
+	<!-- IN PHIẾU XUẤT KHO -->
+     <div id="phieuxuatkho">
+          <h2 class="w3-center w3-bold w3-margin-top">PHIẾU XUẤT KHO</h2>
+          <p class="w3-right-align ngay-thang"><?= $ngay ?></p>
+          <table  style="width: 100%; margin-top: 20px; border-spacing: 0 10px">
+               <tr>
+                    <td style="width: 130px; vertical-align: initial !important;">Khách hàng:</td>
+                    <td class="inTenKhachHang"></td>
+               </tr>
+               <tr>
+                    <td style="width: 130px;vertical-align: initial !important;">Địa chỉ:</td>
+                    <td class="inDiaChiKhachHang"></td>
+               </tr>
+               <tr>
+                    <td style="width: 130px;vertical-align: initial !important;">Lý do xuất kho:</td>
+                    <td>Xuất bán hàng.</td>
+               </tr>
+          </table>
+          <table class="mat-hang">
+               <tr class="w3-center">
+                    <td><span class="w3-bold"> STT</span></td>
+                    <td><span class="w3-bold">Tên sản phẩm</span></td>
+                    <td><span class="w3-bold">Số lượng</span></td>
+                    <td><span class="w3-bold ">Ghi chú</span></td>
+               </tr>
+               <tbody id="inTablePhieuXuatKho">
+                    
+               </tbody>
+               
+          </table>
+          <table style="width: 100%; margin-top: 20px;" class="ky-ten w3-center">
+               <tr>
+                    <td><span class="w3-bold"> Người lập phiếu </span> <br> (Ký, họ tên)</td>
+                    <td><span class="w3-bold">Người nhận hàng </span><br> (Ký, họ tên)</td>
+                    <td><span class="w3-bold">Thủ kho</span><br> (Ký, họ tên)</td>
+                    <td><span class="w3-bold">Giám đốc</span><br> (Ký, họ tên, đóng dấu)</td>
+               </tr>
+               <tr class="w3-center">
+                    <td class="w3-padding-48"><span class="w3-bold kyten"><?php echo $kyten; ?></span></td>
+               </tr>
+          </table>   
+     </div>
+
+</div>

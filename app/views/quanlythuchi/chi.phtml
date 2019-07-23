@@ -1,0 +1,155 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/index') ?>" id="linkIndex">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/ajaxSearch') ?>" id="linkSendAjax">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/editChi/') ?>" id="linkEditChi">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/delete/chi/') ?>" id="linkDeleteChi">
+	<div class="w3-col l2 m4 s2 filter-limit">
+		
+		<span class="name-filter">Limit:</span>
+		
+		<?php 
+		$limtSelector = new Phalcon\Forms\Element\Select('limitChi', [
+				"25" 		=> "25",
+				"50"  		=> "50",
+				"100"  		=> "100",
+				"200" 		=> "200",
+				"500" 		=> "500",
+				"1000" 		=> "1,000",
+		]);
+		
+		$limtSelector->setDefault($limit);
+		
+		echo $limtSelector->render();
+		?>
+	</div>
+	<div class="w3-col l5 m8 s10 filter-search">
+		<span class="name-filter">Filter: </span> 
+		<input type="search" id="filterRowsChi" name="filterRows" value="<?= $filterRows; ?>" placeholder="Search this table">
+		<button type="button" id="btnResetFilterChi" class="buttonX">x</button>
+		<button type="submit" class="w3-green submit" id="btnFilterChi">Filter</button>
+	</div>
+	<div class="w3-col l5 filter-date">
+		<span class="name-filter">Ngày: </span>
+		<input type="date" id="dateStartChi" name="dateStart" value="<?= date("Y-m-d") ?>">
+		<input type="date" id="dateEndChi" name="dateEnd" value="<?= date("Y-m-d") ?>">
+		<button type="button" class="w3-green submit" id="btnDateChi">Gửi</button>
+	</div>
+</div>
+
+<div class="w3-responsive">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+		  	<tr class="w3-blue">
+				<th>STT</th>
+				<?php if ($this->view->duocXoa) { echo "<th>Xóa</th>";} ?>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Ngày
+					<input type="hidden" name="ngay" value="ngay ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Nội Dung
+					<input type="hidden" name="noiDung" value="noiDung ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Số Tiền
+					<input type="hidden" name="soTien" value="soTien ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Nguồn Chi
+					<input type="hidden" name="nguonChi" value="nguonChi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Người Nhận
+					<input type="hidden" name="tenNhaCungCap" value="tenNhaCungCap ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Nhóm Chi Phí
+					<input type="hidden" name="nhomchiPhi" value="nhomchiPhi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Chi Tiết Chi Phí
+					<input type="hidden" name="chiTietChiPhi" value="chiTietChiPhi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Hình Thức
+					<input type="hidden" name="hinhThuc" value="hinhThuc ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Tên Ngân Hàng
+					<input type="hidden" name="ckNganHang" value="ckNganHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByThuChi(this,'Chi')">Ghi Chú
+					<input type="hidden" name="ghiChu" value="ghiChu ASC">
+					</a>
+				</th>
+		  	</tr>
+		</thead>
+		<tbody class="tbodyChi">
+		<?php
+
+		$tongTienThucChi = 0;
+
+		if ( count($pageThucChi->items) ) {
+			
+			$stt = 1;
+			foreach ( $pageThucChi->items as $qltc ) { ?>
+				<tr>
+					<td data-label ='STT'><?= $stt + ($pageThucChi->current - 1) * $pageThucChi->limit; ?></td>
+					<?php if ($this->view->duocXoa) {?>
+						<td data-label ='Xóa'><a href="<?= $this->url->get('quanlythuchi/delete/chi/' . $qltc->id) ?>" title="Xóa Thực Chi này" class="w3-text-red delete" onclick="return confirm('Bạn Có Muốn Xóa Không');">&#10008;</a></td>
+					<?php } ?>
+					<td data-label ='Ngày'><a href="<?= $this->url->get('quanlythuchi/editChi/' . $qltc->id) ?>" title="edit"><?= date_format(date_create($qltc->ngay), 'd-m-Y'); ?></a></td>
+					<td data-label ='Nội Dung'><?= $qltc->noiDung; ?></td>
+					<td data-label ='Số Tiền' class="w3-right-align"><?= number_format($qltc->soTien) ?></td>
+					<td data-label ='Nguồn Chi'><?= $qltc->nguonChi ?></td>
+					<td data-label ='Người Nhận'><?= isset($qltc->NhaCungCap->tenNhaCungCap) ? $qltc->NhaCungCap->tenNhaCungCap : $qltc->nguoiNhan; ?></td>
+					<td data-label ='Nhóm Chi Phí'><?= $qltc->nhomChiPhi; ?></td>
+					<td data-label ='Chi Tiết Chi Phí'><?= $qltc->chiTietChiPhi; ?></td>
+					<td data-label ='Hình Thức'><?= $qltc->hinhThuc; ?></td>
+					<td data-label ='CK Ngân Hàng'><?= empty($qltc->ckNganHang) ? '' : $qltc->NganHang->tenNganHang; ?></td>
+					<td data-label ='Ghi Chú'><?= $qltc->ghiChu; ?></td>
+				</tr>
+
+				<?php $tongTienThucChi += $qltc->soTien; ?>
+		<?php 
+			$stt++;
+		}} else { ?>
+				<tr>
+					<td colspan="12"><div class="alert alert-warning">Không tìm thấy Quản Lý Thực Chi</div></td>
+				</tr>
+		<?php } ?>
+		</tbody>
+		<?php
+		if ( $pageThucChi->total_pages > 0 ) { ?>
+		<tfoot>
+	        <tr>
+	            <td colspan="12" align="right">
+					<div class="w3-bar w3-center" id="paginationChi">
+						<?= $this->tag->linkTo(['quanlythuchi/index?pageThucChi=' . $pageThucChi->first, '&laquo;', 'class' => 'w3-button w3-hover-green']) ?>
+						
+						<?php for ( $pageThucChiIndex = 1; $pageThucChiIndex <= $pageThucChi->total_pages; $pageThucChiIndex++ ) {
+						
+							if ( $pageThucChiIndex == $pageThucChi->current ) {
+								echo $this->tag->linkTo(['quanlythuchi/index?pageThucChi=' . $pageThucChiIndex, $pageThucChiIndex, 'class' => 'w3-button w3-hover-gray w3-blue']);
+							} else {
+								echo $this->tag->linkTo(['quanlythuchi/index?pageThucChi=' . $pageThucChiIndex, $pageThucChiIndex, 'class' => 'w3-button w3-hover-gray ']);
+							}
+						}
+						
+						echo $this->tag->linkTo(['quanlythuchi/index?pageThucChi=' . $pageThucChi->last, '&raquo;', 'class' => 'w3-button w3-hover-green']) ?>
+						
+						( <?= $pageThucChi->current ?> of <?= $pageThucChi->total_pages ?> )
+						
+					</div>
+	            </td>
+	        </tr>
+	    </tfoot>
+		<?php } ?>
+	</table>
+</div>
+
+<div class="w3-row">
+	<div class="w3-right-align" style="margin-top:15px;background: #000;padding: 10px;color: #fff">
+		<?php echo "<b>Tổng Tiền:</b> <span class='tongTienThucChi'>".number_format($tongTienThucChi)."</span>"; ?>
+	</div>
+</div>

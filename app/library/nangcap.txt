@@ -1,0 +1,304 @@
+public function thongKeChung()
+	{
+		$arrayChung = array(
+
+			'chung'	=> [
+
+				'doanhThuCoVAT'	=> 0,
+				'doanhThuKhongVAT'	=> 0,
+				'thueVAT'			=> 0,
+				'tongCongNo'		=> 0,
+
+				'congNoThayDoi'		=> Orders::sum(['column' => 'tongTienThanhToan', 'conditions' => 'ngay = "'. date('Y-m-d') .'"'])
+				 - Orders::sum(['column' => 'tongTienThanhToan', 'conditions' => 'ngay = "'. date('Y-m-d',(strtotime ( '-1 day' , strtotime ( date('Y-m-d')) ) )) .'"' ]),
+
+				'sanPhamNoiBat'		=> 0,
+				'sanPhamKhac'		=> 0,
+			]
+		);
+
+		$products = Products::find();
+		for ($i = 0; $i < count($products); $i++) {
+
+			if ( $products[$i]->noiBat )
+				$arrayChung['chung']['sanPhamNoiBat'] += $products[$i]->tonHienTai * $products[$i]->donGiaMuaVao;
+			else
+				$arrayChung['chung']['sanPhamKhac'] += $products[$i]->tonHienTai * $products[$i]->donGiaMuaVao;
+			
+		}
+
+		$orders = Orders::find([
+			'conditions'	=> 'trangThai NOT IN ({trangThai:array})',
+			'bind'			=> ['trangThai' => ['huyTruocBH','huySauBH']]
+		]);
+
+		for ($i = 0; $i < count($orders); $i++) {
+			
+			if ( $orders[$i]->thueVAT )
+				$arrayChung['chung']['doanhThuCoVAT']	+= $orders[$i]->tongTienThanhToan;
+			else
+				$arrayChung['chung']['doanhThuKhongVAT']	+= $orders[$i]->tongTienThanhToan;
+
+			$arrayChung['chung']['thueVAT']			+= $orders[$i]->thueVAT;
+			$arrayChung['chung']['tongCongNo']		+= $orders[$i]->congNo;
+		}
+
+		return $arrayChung;
+	}
+
+	public function thongKeThucThu($date = null)
+    {
+        $arrayThucThu = array(
+            'thucThu' => [
+
+                'tongThu'           => 0,
+                'thuNguonThu'       => [
+
+                    'banHang'           => 0,
+                    'nhaCungCap'        => 0,
+                    'vayMuon'           => 0,
+                    'khac'              => 0,
+                ],
+
+                'thuNganHang'       => [
+
+                    'tienMat'           => 0,
+                    'VCB (Cá Nhân)'     => 0,
+                    'Á Châu (Cty)'      => 0,
+                    'Á Châu (Cá Nhân)'  => 0,
+                    'Vietin (Cty)'      => 0,
+                    'Sacom (Cty)'       => 0,
+                    'Vietin CN'         => 0,
+                    'Khác'              => 0
+                ]
+            ]    
+        );
+
+        $date = (empty($date)) ? date('Y-m-d') : $date;
+
+        $thucthu = QuanLyThucThu::find([
+
+            'conditions'    => 'ngay <= "'. $date .'"'
+        ]);
+        $thucchi = QuanLyThucChi::find([
+
+            'conditions'    => 'ngay <= "'. $date .'"'
+        ]);
+
+        for ($i = 0; $i < count($thucthu) ; $i++) {
+            
+            $arrayThucThu['thucThu']['tongThu'] += $thucthu[$i]->soTien;
+            switch ( $thucthu[$i]->nguonThu ) {
+                case 'Bán Hàng':
+                    $arrayThucThu['thucThu']['thuNguonThu']['banHang']    += $thucthu[$i]->soTien;
+                    break;
+                case 'Nhà Cung Cấp':
+                    $arrayThucThu['thucThu']['thuNguonThu']['nhaCungCap'] += $thucthu[$i]->soTien;
+                    break;
+                case 'Vay Mượn':
+                    $arrayThucThu['thucThu']['thuNguonThu']['vayMuon']    += $thucthu[$i]->soTien;
+                    break;
+                case 'Khác':
+                    $arrayThucThu['thucThu']['thuNguonThu']['khac']       += $thucthu[$i]->soTien;
+                    break;
+                default:
+                    
+                    break;
+            }
+            
+            $name = (isset($thucthu[$i]->NganHang->tenNganHang)) ? $thucthu[$i]->NganHang->tenNganHang : 'tienMat';
+            $arrayThucThu['thucThu']['thuNganHang'][$name] += $thucthu[$i]->soTien; 
+
+        }
+
+        for ($i = 0; $i < count($thucchi); $i++) {
+            
+            $name = (isset($thucchi[$i]->NganHang->tenNganHang)) ? $thucchi[$i]->NganHang->tenNganHang : 'tienMat';
+            $arrayThucThu['thucThu']['thuNganHang'][$name] -= $thucchi[$i]->soTien;
+        }
+
+        return $arrayThucThu;
+    }
+
+    public function thongKeThucChi()
+    {
+        $arrayThucChi = array(
+
+            'thucChi'    => [
+
+                'tongThucChi'       => 0,
+                'sanXuat'   => [
+                    'binh'          => 0,
+                    'motor'         => 0,
+                    'dauNen'        => 0,
+                    'vatTu'         => 0,
+                    'khac'          => 0,
+                ],
+
+                'chiPhi'    => [
+                    'luong'         => 0,
+                    'vanPhong'      => 0,
+                    'quanLy'        => 0,
+                    'xuong'         => 0,
+                    'caNhan'        => 0,
+                    'chiBanHang'    => 0,
+                    'traNo'         => 0,
+                ],
+                'thucChiKhac'   => [
+                    'khac'              => 0,
+                    'thucChiCu'         => 0
+                ]
+                
+            ]
+            
+        );
+
+        $thucchi = QuanLyThucChi::find();
+
+        for ($i = 0; $i < count($thucchi) ; $i++) {
+
+            $arrayThucChi['thucChi']['tongThucChi']     += $thucchi[$i]->soTien;
+            
+            if ($thucchi[$i]->nguonChi == 'Sản Xuất') {
+
+                switch ( $thucchi[$i]->chiTietChiPhi ) {
+                    case 'Bình':
+                        $arrayThucChi['thucChi']['sanXuat']['binh']    += $thucchi[$i]->soTien;
+                        break;
+
+                    case 'Motor':
+                        $arrayThucChi['thucChi']['sanXuat']['motor']   += $thucchi[$i]->soTien;
+                        break;
+
+                    case 'Đầu Nén':
+                        $arrayThucChi['thucChi']['sanXuat']['dauNen']  += $thucchi[$i]->soTien;
+                        break;
+
+                    case 'Vật Tư':
+                        $arrayThucChi['thucChi']['sanXuat']['vatTu']   += $thucchi[$i]->soTien;
+                        break;
+
+                    case 'Khác':
+                        $arrayThucChi['thucChi']['sanXuat']['khac']    += $thucchi[$i]->soTien;
+                        break;
+
+                    default:
+                        break;
+                }
+
+            } elseif ($thucchi[$i]->nguonChi == 'Chi Phí') {
+
+                switch ($thucchi[$i]->nhomChiPhi) {
+                    case 'Cá Nhân':
+                        $arrayThucChi['thucChi']['chiPhi']['caNhan']       += $thucchi[$i]->soTien;
+                        break;
+                    case 'Văn Phòng':
+                        $arrayThucChi['thucChi']['chiPhi']['vanPhong']     += $thucchi[$i]->soTien;
+                        break;
+                    case 'Quản Lý':
+                        $arrayThucChi['thucChi']['chiPhi']['quanLy']       += $thucchi[$i]->soTien;
+                        break;
+                    case 'Lương':
+                        $arrayThucChi['thucChi']['chiPhi']['luong']        += $thucchi[$i]->soTien;
+                        break;
+                    case 'Xưởng':
+                        $arrayThucChi['thucChi']['chiPhi']['xuong']        += $thucchi[$i]->soTien;
+                        break;
+                    case 'Chi Bán Hàng':
+                        $arrayThucChi['thucChi']['chiPhi']['chiBanHang']   += $thucchi[$i]->soTien;
+                        break;
+                    case 'Trả Nợ':
+                        $arrayThucChi['thucChi']['chiPhi']['traNo']        += $thucchi[$i]->soTien;
+                        break;
+                    
+                    default:
+                        break;
+                }
+            } elseif ($thucchi[$i]->nguonChi == 'Khác') {
+                
+                $arrayThucChi['thucChi']['thucChiKhac']['khac'] += $thucchi[$i]->soTien;
+            } else {
+
+                $arrayThucChi['thucChi']['thucChiKhac']['thucChiCu'] += $thucchi[$i]->soTien;
+            }
+        }
+
+        return $arrayThucChi;
+    }
+
+    public function thongKeTrongNgay()
+	{
+		$orders = Orders::find([
+			'conditions'	=> '(ngay between :dateStart: AND :dateEnd:) AND trangThai NOT IN ({trangThai:array})',
+			'bind'			=> [
+				'dateStart' => date('Y-m-d').' 00:00:01',
+				'dateEnd' 	=> date('Y-m-d').' 23:59:59',
+				'trangThai' => ['huyTruocBH','huySauBH']
+			]
+		]);
+
+		//tạo mảng để chứa data
+		$arrayTrongNgay = array(
+			'trongNgay' => [
+
+				'soDonHangTrongNgay'			=> count($orders),
+				'doanhThuCoVATTrongNgay'		=> 0,
+				'doanhThuKhongVATTrongNgay'		=> 0,
+				'thueVATTrongNgay'				=> 0,
+				'congNoTrongNgay'				=> 0,
+
+				'thuDonHangTrongNgay'  			=> QuanLyThucThu::sum([
+						'column' => 'soTien',
+						'conditions' => 'nguonThu = ' . "'Bán Hàng'" . ' AND ngay = "'. date('Y-m-d') .'"'
+				]),
+
+				'tongThuTrongNgay'				=> 0,
+				'tongChiTrongNgay'				=> 0
+			]
+		);
+
+		//gán dữ liệu vào mảng
+		$arrayTrongNgay['trongNgay']['tongThuTrongNgay'] += QuanLyThucThu::sum([
+						'column' => 'soTien',
+						'conditions' => 'ngay = "'. date('Y-m-d') .'"'
+				]);
+
+		$arrayTrongNgay['trongNgay']['tongChiTrongNgay'] += QuanLyThucChi::sum([
+						'column' => 'soTien',
+						'conditions' => 'ngay = "'. date('Y-m-d') .'"'
+				]);
+
+		for ($i = 0; $i < $arrayTrongNgay['trongNgay']['soDonHangTrongNgay']; $i++) {
+			
+			$arrayTrongNgay['trongNgay']['thueVATTrongNgay']				+= $orders[$i]->thueVAT;
+			$arrayTrongNgay['trongNgay']['thuDonHangTrongNgay']				+= $orders[$i]->tongTienThanhToan - $orders[$i]->congNo;
+			$arrayTrongNgay['trongNgay']['congNoTrongNgay']					+= $orders[$i]->congNo;
+
+			if ( $orders[$i]->thueVAT )
+				$arrayTrongNgay['trongNgay']['doanhThuCoVATTrongNgay']		+= $orders[$i]->tongTienThanhToan;
+			else
+				$arrayTrongNgay['trongNgay']['doanhThuKhongVATTrongNgay']	+= $orders[$i]->tongCongChuaVAT;
+			
+		}
+
+		return $arrayTrongNgay;
+
+	}
+
+	public function thongKe()
+	{
+		$arrayThongKe = $this->thongKeThucThu() + $this->thongKeThucChi() + $this->thongKeTrongNgay() + $this->thongKeChung();
+
+		return $arrayThongKe;
+	}
+
+	public function createThongKe()
+	{
+
+		$this->create([
+
+			'ngay'		=> date('Y-m-d'),
+			'thongKe'	=> json_encode($this->thongKe())
+		]);
+		return true;
+	}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<?= $this->tag->getTitle() ?>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<?= $this->tag->stylesheetLink('css/w3.css') ?>
+<?= $this->tag->stylesheetLink('css/css.css') ?>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/brands.css">
+<link href="<?= $this->config->application->site . 'img/icon.png' ?>" rel="shortcut icon" type="image/x-icon">
+<?= $this->tag->javascriptInclude('js/jquery.min.js') ?>
+<?= $this->tag->javascriptInclude('js/js.js') ?>
+<script src="//cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
+<?= $this->tag->javascriptInclude('public/ckfinder/ckfinder.js') ?>
+
+<body>
+<div class="w3-container notIn">
+	<div class="head">
+		<div class="w3-right-align one">
+			<span>Hi, <strong><?= (isset($user['name'])) ? $user['name'] : "?????"; ?></strong></span>
+			<a href="<?= $this->url->get('session/logout') ?>" class="w3-bar-item w3-button"><i class="fas fa-sign-out-alt"></i></a>
+			<a href="<?= (isset($user['name'])) ? $this->url->get('users/edit/'. $user['id']) : "#"; ?>" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+			<a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+		</div>
+			
+		<div class="two w3-center">
+			<h5 class="w3-text-green w3-bold title"><?= $this->view->title; ?></h5>
+		</div>
+	</div>
+
+	<?= $this->elements->getLeftNav() ?>
+	<hr />
+</div>
+<div class="w3-container">
+	<?php echo $this->getContent(); ?>
+</div>
+
+<?php $this->assets->outputJs(); ?>
+</body>
+</html>

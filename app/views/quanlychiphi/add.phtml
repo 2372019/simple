@@ -1,0 +1,32 @@
+<div class="w3-main w3-container">
+    <form action="" method="post" accept-charset="utf-8">
+	  <div class="overflowHidden">
+        <div class="form-group">    
+          <label class="w3-text-green"><b>Chi Cho Ai <span class="required">(*)</span></b></label>
+          <?php echo $form->render('chiChoAi', array('class' => 'w3-input w3-border validateFiled')); ?>
+        </div>
+		
+		<div>
+			<div class="w3-third">
+				<div class="form-group row-inline">    
+				  <label class="w3-text-green"><b>Số Tiền Chi <span class="required">(*)</span></b></label>
+				  <?php echo $form->render('soTienChi', array('class' => 'w3-input w3-border replacePrice validateFiled keyUpFormatAmount')); ?>
+				</div>
+			</div>
+			<div class="w3-third padding-left10px padding-none">
+				<div class="form-group">      
+				  <label class="w3-text-green"><b>Loại Chi Phí</b></label>
+				  <?php echo $form->render('loaiChiPhi', array('class' => 'w3-input w3-border validateFiled')); ?>
+				</div>
+			</div>
+			<div class="w3-third padding-left10px padding-none">
+				<div class="form-group">     
+				  <label class="w3-text-green"><b>Lý Do Chi</b></label>
+				  <?php echo $form->render('lyDoChi', array('class' => 'w3-input w3-border' , 'rows' => '5')); ?>
+				</div>
+			</div>
+		</div>
+      </div>
+	  <div class="w3-section"><button id="submit" class="w3-btn w3-green">Đăng ký</button></div>
+	</form>
+</div>

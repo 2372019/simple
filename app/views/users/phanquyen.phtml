@@ -1,0 +1,36 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+	<div class="w3-cell w3-padding">
+		<a href="<?= $this->url->get('users/addphanquyen') ?>" title="thêm" class="w3-btn w3-green">Thêm Phân Quyền</a>
+	</div>
+</div>
+
+<div class="w3-responsive" id="stuff">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+		  	<tr class="w3-blue">
+				<th>STT</th>
+				<th>Xóa</th>
+				<th>Tên Phân Quyền</th>
+		  	</tr>
+		</thead>
+		<tbody>
+		<?php
+		 if ( count($phanQuyen) ) {
+			
+			$stt = 1;
+			foreach ( $phanQuyen as $phanquyen ) { ?>
+				<tr>
+					<td data-label ='STT'><?= $stt ?></td>
+					<td data-label ='Xóa'><a href="<?= $this->url->get('users/deletephanquyen/' . $phanquyen->id) ?>" title="Xóa Phần Quyền này" class="w3-text-red delete" onclick="return confirm('Bạn Có Muốn Xóa Không');">&#10008;</a></td>
+					<td data-label ='Quyền'><a href="<?= $this->url->get('users/editphanquyen/' . $phanquyen->id) ?>" title="edit" class="edit"><?= $phanquyen->name; ?></a></td>	
+				</tr>
+		<?php 
+			$stt++;
+		}} else { ?>
+				<tr>
+					<td colspan="3"><div class="alert alert-warning">Không tìm thấy Quyền</div></td>
+				</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+</div>

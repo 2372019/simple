@@ -1,0 +1,120 @@
+<div class="w3-main">
+	<div id="listProductsModal" class="w3-modal">
+		<div class="w3-modal-content">
+			<div class="w3-container">
+				<span onclick='$("#listProductsModal").hide()' class="w3-button w3-display-topright">&times;</span>
+				<input type="hidden" id="listProductsLink" value="<?php echo $this->url->get('products/list') ?>" />
+				<div id="listProductsTable">
+					xxxx
+				</div>
+			</div>
+		</div>
+   	</div>
+
+   	<div class="listNhaCungCapModal w3-modal">
+		<div class="w3-modal-content">
+			<div class="w3-container">
+				<span onclick='$(".listNhaCungCapModal").hide()' class="w3-button w3-display-topright">&times;</span>
+				<input type="hidden" id="listNhaCungCapLink" value="<?php echo $this->url->get('nhacungcap/list') ?>" />
+				<div id="listNhaCungCapTable">
+					xxxx
+				</div>
+			</div>
+		</div>
+   	</div>
+
+    <form action="" method="post" accept-charset="utf-8" id="formAddPhieuNhapKho">
+		<input type="hidden" value="<?= $this->url->get('products/ajaxProduct') ?>" id="addLinkSendAjax">
+    		
+    		<div class="row w3-row-padding">
+
+	    		<?php echo $form->render('idNguoiLapPhieu', array('class' => 'w3-input w3-border ' , 'value' => $user['id'])); ?>
+
+	    		<div class="w3-col l2 m4">
+	    			<label class="w3-text-green"><b>Lý Do Nhập <span class="required">( * )</span></b></label>
+		          	<?php echo $form->render('lyDoNhap', array('class' => 'w3-input w3-border validateFiled')); ?>
+	    		</div>
+	    		<div class="w3-col l2 m4">
+
+		          	<?php echo $form->render('idNhaCungCap', array('class' => 'w3-input w3-border idNhaCungCap validateFiled')); ?>
+	    			<label class="w3-text-green"><b>Nhà Cung Cấp</b><span class="required">(*)</span></label>
+					<input type="text" name="tenNhaCungCap" class="tenNhaCungCap" value="" disabled>
+					<button id="btnChonNhaCungCap" type="button" class="buttonX w3-green w3-hover-gray"><i class="fa fa-search" aria-hidden="true"></i></button>
+	    		</div>
+				<div class="w3-col l2 m4">
+	    			<label class="w3-text-green"><b>Người Nhận Hàng <span class="required">( * )</span></b></label>
+		          	<?php echo $form->render('idNguoiNhanHang', array('class' => 'w3-input w3-border validateFiled')); ?>
+    			</div>
+    			<div class="w3-col l3 m6">
+	    			<label class="w3-text-green"><b>Nội Dung <span class="required">( * )</span></b></label>
+		          	<?php echo $form->render('noiDung', array('class' => 'w3-input w3-border validateFiled')); ?>
+	    		</div>
+	    		<div class="w3-col l3 m6">
+	    			<label class="w3-text-green"><b>Ghi Chú</b></label>
+		          	<?php echo $form->render('ghiChu', array('class' => 'w3-input w3-border')); ?>
+	    		</div>
+				<br>
+               
+               <table id="addTable" class="w3-table-all w3-bordered w3-border">
+                    <thead>
+                        <tr class="w3-red">
+                        	<th>STT</th>
+                           	<th>Mã SP</th>
+                           	<th>Tên Sản Phẩm</th>
+                           	<th>Tồn Đầu Kỳ</th>
+                           	<th>Số Lượng Nhập</th>
+                           	<th>Đơn Giá</th>
+                           	<th>Ghi Chú</th>
+                           	<th>Tồn Cuối Kỳ</th>
+                           	<th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="addMaSanPham">
+                            <td class="stt-add">1</td>
+                            <td colspan="8">
+                            	<input type="text" id="addMaSanPham" value="" placeholder="Nhập mã sản phẩm">
+                            	<button id="btnChonSanPham" type="button" class="w3-green w3-hover-gray"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+							<td colspan="2">
+								<label>Xuất Hóa Đơn</label>
+								<input type="checkbox" id="coXuatHoaDonKhong" name="coXuatHoaDonKhong" value="1" class="w3-check">
+							</td>
+							<td>Tổng SL: </td>
+							<td>
+								<?php echo $form->render('tongSoLuong', array('class' => 'w3-input w3-border width130 w3-right-align', 'value' => '0' , 'readonly' => true)); ?>	
+							</td>
+							<td colspan="2"></td>
+							<td>Tổng Cộng Chưa VAT:</td>
+							<td colspan="2"><input type="text" name="tongCongChuaVAT" value="0" id="tongCongChuaVAT" readonly="true" class="w3-right-align"></td>
+                        </tr>
+                        <tr class="thuevat" style="display: none">
+                            <td colspan="6"></td>
+                            
+                            <td>Thuế VAT:</td>
+                            <td colspan="2"><input type="text" name="thueVAT" value="0" id="thueVAT" readonly="true" class="w3-right-align"></td>
+                        </tr>
+                        <tr class="sum">
+                            <td colspan="2"></td>
+                            <td>Đã Thanh Toán: </td>
+							<td>
+								<?php echo $form->render('daThanhToan', array('class' => 'w3-input w3-border width130 w3-right-align keyUpFormatAmount', 'value' => '0', 'readonly' => true)); ?>
+							</td>
+							<td>Còn Nợ: </td>
+							<td>
+								<?php echo $form->render('conNo', array('class' => 'w3-input w3-border width130 w3-right-align keyUpFormatAmount', 'value' => '0', 'readonly' => true)); ?>
+							</td>
+                            <td>Tổng Tiền:</td>
+                            <td colspan="2"><input type="text" name="tongThanhToan" value="0" id="tongThanhToan" readonly="true" class="w3-right-align"></td>
+                        </tr>
+                    </tbody>
+               </table>
+               <br>
+
+    		</div>
+
+  		<div class="w3-section"><button id="submit" class="w3-btn w3-green">Đăng ký</button></div>
+	</form>
+</div>

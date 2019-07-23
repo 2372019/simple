@@ -1,0 +1,126 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+
+	<input type="hidden" value="<?= $this->url->get('orders/checkboxAddOrder') ?>" id="linkAddOrderCheckBox">
+	<input type="hidden" value="<?= $this->url->get('customers/edit/') ?>" id="linkCustomersEdit">
+	<input type="hidden" value="<?= $this->url->get('customers/ajaxSearch') ?>" id="linkAddOrderSendAjax">
+	<div class="w3-col l2 m4 s2 filter-limit">
+		
+		<span class="name-filter">Limit:</span>
+		
+		<?php 
+		$limtSelector = new Phalcon\Forms\Element\Select('limitAddOrder', [
+				"25" 		=> "25",
+				"50"  		=> "50",
+				"100"  		=> "100",
+				"250" 		=> "250",
+				"500" 		=> "500",
+				"1000" 		=> "1,000",
+		]);
+		
+		$limtSelector->setDefault($limit);
+		
+		echo $limtSelector->render();
+		?>
+	</div>
+	<div class="w3-col l5 m8 s10 filter-search">
+		<span class="name-filter">Filter: </span>
+		<input type="search" name="addOrderFilterRows" value="" id="addOrderFilterRows" placeholder="Search this table">
+		<button type="button" id="btnAddOrderResetFilter" class="buttonX">x</button>
+		<button type="button" class="w3-green submit" id="btnAddOrderFilter">Filter</button>
+	</div>
+	<div class="w3-col l5 filter-date">
+		<input type="date" name="dateAddOrderStart" value="<?= date("Y-m-d") ?>">
+		<input type="date" name="dateAddOrderEnd" value="<?= date("Y-m-d") ?>">
+		<button type="button" class="w3-green submit" id="btnAddOrderDate">Filter</button>
+	</div>
+</div>
+
+<div class="w3-responsive" style="height: 400px">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+			<tr class="w3-blue">
+				<th>STT</th>
+				<th><a class="orderColumn" onclick="orderByAddOrder(this)">Tên khách hàng
+					<input type="hidden" name="tenKhachHang" value="tenKhachHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddOrder(this)">Tổng Công Nợ
+					<input type="hidden" name="congNo" value="congNo ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddOrder(this)">Mã Số Thuế
+					<input type="hidden" name="mST" value="mST ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddOrder(this)">Địa Chỉ
+					<input type="hidden" name="diaChi" value="diaChi ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddOrder(this)">Người mua hàng
+					<input type="hidden" name="nguoiMuaHang" value="nguoiMuaHang ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddOrder(this)">Số Điện Thoại
+					<input type="hidden" name="soDienThoai" value="soDienThoai ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddOrder(this)">Loại Khách Hàng
+					<input type="hidden" name="loaiKhachHang" value="loaiKhachHang ASC">
+					</a>
+				</th>
+			</tr>
+		</thead>
+		<tbody id="addOrderTbody" class="tbody">
+		<?php
+		 if ( count($page->items) ) {
+			
+			$stt = 1;
+			foreach ( $page->items as $customer ) {
+			?>
+				<tr>
+					<td data-label ='STT'><?= $stt + ($page->current - 1) * $page->limit; ?></td>
+					<td data-label ='Tên KH' class="tenKhachHang"><a href="#" onclick="chonAddOrder(this)" title="<?= $customer['id'] ?>" class="chonAddOrder"><?= $customer['tenKhachHang']; ?></a></td>
+					<td class="w3-right-align w3-bold" data-label ='Tổng công nợ'><?= number_format($customer['tongCongNo']); ?></td>
+					<td data-label ='MST'><?= $customer['mST']; ?></td>
+					<td data-label ='Địa Chỉ' class="diaChi"><?= $customer['diaChi']; ?></td>
+					<td data-label ='Người MH' class="nguoiMuaHang"><?= $customer['nguoiMuaHang']; ?></td>
+					<td data-label ='SĐT' class="soDienThoai"><?= $customer['soDienThoai']; ?></td>
+					<td data-label ='Loại KH'><?= $customer['loaiKhachHang']; ?></td>
+				</tr>
+		<?php 
+			$stt++;
+		}} else { ?>
+				<tr>
+					<td colspan="7"><div class="alert alert-warning">Không tìm thấy Khách Hàng</div></td>
+				</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+</div>
+
+<?php
+if ( $page->total_pages > 0 ) { ?>
+	
+	<div class="w3-bar w3-center" id="paginationAddOrder">
+		<a href="#" title="<?= $page->first; ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)">&laquo;</a>
+		
+		<?php for ( $pageIndex = 1; $pageIndex <= $page->total_pages; $pageIndex++ ) {
+		
+			if ( $pageIndex == $page->current ) { ?>
+				<a href="#" title="<?= $pageIndex ?>" class="w3-button w3-hover-green w3-blue" onclick="paginationAjax(this)"><?= $pageIndex ?></a>
+			<?php } else {
+				?>
+				<a href="#" title="<?= $pageIndex ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)"><?= $pageIndex ?></a>
+			<?php
+			}
+		}
+		?>
+		
+		<a href="#" title="<?= $page->last; ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)">&laquo;</a>
+		
+		( <?= $page->current ?> of <?= $page->total_pages ?> )
+		
+	</div>
+
+<?php } ?>
+<?= $this->tag->javascriptInclude('js/js-list-customers.js') ?>

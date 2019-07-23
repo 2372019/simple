@@ -1,0 +1,81 @@
+<?php 
+    
+    $arrayKey = array(
+        'index'             => 'Trang Search và Thêm',
+        'ajaxSearch'        => 'Chức Năng Sắp Xếp',
+        'edit'              => 'Trang Sửa',
+        'editThu'           => 'Trang Sửa QL Thu',
+        'editChi'           => 'Trang Sửa QL Chi',
+        'delete'            => 'Chức Năng Xóa',
+        'addPhanQuyen'      => 'Thêm Phân Quyền',
+        'editPhanQuyen'     => 'Sửa Phân Quyền',
+        'deletePhanQuyen'   => 'Xóa Phân Quyền',
+        'thongKeThucChi'    => 'Xem Thống Kê Thực Chi',
+        'thongKeDoanhThu'   => 'Xem Thống Kê Doanh Thu',
+    );
+
+?>
+
+<div class="w3-main w3-container">
+    <?= $this->flashSession->output(); ?>
+    <?= $this->getContent(); // Thông báo lỗi chung?>
+
+    <form action="" method="post" accept-charset="utf-8">
+        <div class="w3-row">
+
+            <div class="w3-row-padding">
+                <div class="w3-col l4 m4">
+                    <div class="form-group">    
+                        <label class="w3-text-green"><b>Tên Phân Quyền <span class="required">(*)</span></b></label>
+                        <input type="text" name="name" value="<?= $phanquyen->name ?>" class="w3-input w3-border validateFiled">
+                    </div>
+                </div>
+
+                <div class="w3-col l8 m8">
+
+					<?php 
+						$permissions	= ($phanquyen->permissions) ? get_object_vars(json_decode($phanquyen->permissions)) : array();
+						$resource 		= array_change_key_case($resource,CASE_LOWER);
+					?>
+					<ul class="list-phanquyen">
+						<?php foreach ( $resource as $keyResource => $valueResource) :?>
+							<li class="item"><span class="controller"><?= $keyResource ?></span>
+
+								<ul>
+									<?php
+
+										$arrayValuePermission = array();
+										foreach ($permissions as $keyPermission => $valuePermission) { 
+
+											if ($keyPermission == $keyResource) { 
+
+												$arrayValuePermission = $valuePermission;
+											}
+										} 
+										
+									?>
+									
+									<?php foreach ( $valueResource as $value ): ?>
+										
+										<li>
+											<input type="checkbox" name="phanquyen[<?= $keyResource ?>][]" value="<?= $value ?>"
+											 <?= in_array( $value, $arrayValuePermission ) ? ' checked' : "" ?>>
+											 <?= array_key_exists($value, $arrayKey) ? $arrayKey[$value] : $value ?>
+										</li>
+											
+									<?php endforeach ?>
+
+								</ul>
+
+							</li>
+						<?php endforeach;?>
+					</ul>
+
+                </div>
+            </div>
+            
+        </div>
+        <div class="w3-row-padding"><button id="submit" class="w3-btn w3-green w3-margin-top">EDIT</button></div>
+    </form>
+</div>
+

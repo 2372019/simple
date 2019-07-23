@@ -1,0 +1,176 @@
+<div class="w3-main">
+
+	<?= $this->flashSession->output(); ?>
+	<?= $this->getContent(); // Thông báo lỗi chung?>
+
+    <form action="" method="post" accept-charset="utf-8">
+        <div class="row w3-row-padding">
+            <div class="w3-col l12">
+                <label class="w3-text-green"><b>Nội Dung</b></label>
+                <?php echo $form->render('noiDung', array('class' => 'w3-input w3-border noiDungThucChi')); ?>
+            </div>  
+            
+            <div class="w3-col l3 m3">
+                <label class="w3-text-green"><b>Nguồn Chi</b></label>
+                <?php echo $form->render('nguonChi', array('class' => 'w3-input w3-border')); ?>
+
+                <input type="hidden" name="idDatHang" class="idDatHang" value="<?= $qltc->idDatHang ?>">
+                <input type="hidden" name="idQuanLyChiPhi" class="idQuanLyChiPhi" value="<?= $qltc->idQuanLyChiPhi ?>">
+            </div>
+            <div class="w3-col l3 m3">
+                <label class="w3-text-green"><b>Chi Phí/Mua Vào</b></label>
+
+                <?php if ($qltc->idDatHang) {
+                    $chiphimuavao = $qltc->DatHang->NhaCungCap->tenNhaCungCap;
+                } elseif ($qltc->idQuanLyChiPhi) {
+                    $chiphimuavao = $qltc->QuanLyChiPhi->chiChoAi;
+                } else {
+                    $chiphimuavao = '';
+                } ?>
+                
+                <input type="text" name="chiPhiMuaVao" class="w3-input w3-border chiPhiMuaVao" value="<?= $chiphimuavao ?>" disabled>
+            </div>
+            <div class="w3-col l3 m3">
+                <label class="w3-text-green"><b>Nhóm Chi Phí</b></label>
+                <?=  ($qltc->idDatHang) ? 
+                	$form->render('nhomChiPhi', array('class' => 'w3-input w3-border', 'disabled' => 'disabled')) :
+                	$form->render('nhomChiPhi', array('class' => 'w3-input w3-border'))
+                ?>
+            </div> 
+            <div class="w3-col l3 m3">
+                <label class="w3-text-green"><b>Chi Tiết Chi Phí</b></label>
+
+                <input type="text" name="chiTietChiPhi" id="chiTietChiPhi" class="w3-input w3-border w3-light-gray chiTietChiPhi" value="" <?= (empty($qltc->chiTietChiPhi)) ? "disabled='disabled'" : "disabled='disabled' style='display: none;'"?>>
+
+                <select name="chiTietChiPhi" id="chiTietChiPhiSX" class="w3-input w3-border chiTietChiPhi"
+			  	<?= ($qltc->nguonChi == 'Sản Xuất') ? "" : "disabled='disabled' style='display: none;'"?> >
+			  		<option value="Bình" <?= (($qltc->chiTietChiPhi)=='Bình') ? 'selected' : '' ?>>Bình</option>
+			  		<option value="Motor" <?= (($qltc->chiTietChiPhi)=='Motor') ? 'selected' : '' ?>>Motor</option>
+			  		<option value="Đầu Nén" <?= (($qltc->chiTietChiPhi)=='Đầu Nén') ? 'selected' : '' ?>>Đầu Nén</option>
+			  		<option value="Vật Tư" <?= (($qltc->chiTietChiPhi)=='Vật Tư') ? 'selected' : '' ?>>Vật Tư</option>
+			  		<option value="Khác" <?= (($qltc->chiTietChiPhi)=='Khác') ? 'selected' : '' ?>>Khác</option>
+			  	</select>
+
+			  	<select name="chiTietChiPhi" id="chiTietChiPhiQL" class="w3-input w3-border chiTietChiPhi" 
+			  	<?= ($qltc->nhomChiPhi == 'Quản Lý') ? "" : "disabled='disabled' style='display: none;'"?>>
+			  		<option value="Hóa Đơn" <?= (($qltc->chiTietChiPhi)=='Hóa Đơn') ? 'selected' : '' ?>>Hóa Đơn</option>
+			  		<option value="Khác" <?= (($qltc->chiTietChiPhi)=='Khác') ? 'selected' : '' ?>>Khác</option>
+			  	</select>
+
+			  	<select name="chiTietChiPhi" id="chiTietChiPhiX" class="w3-input w3-border chiTietChiPhi"
+			  	 <?= ($qltc->nhomChiPhi == 'Xưởng') ? "" : "disabled='disabled' style='display: none;'"?>>
+			  		<option value="Thuê Xưởng" <?= (($qltc->chiTietChiPhi)=='Thuê Xưởng') ? 'selected' : '' ?>>Thuê Xưởng</option>
+			  		<option value="Nước" <?= (($qltc->chiTietChiPhi)=='Nước') ? 'selected' : '' ?>>Nước</option>
+			  		<option value="Điện" <?= (($qltc->chiTietChiPhi)=='Điện') ? 'selected' : '' ?>>Điện</option>
+			  		<option value="Internet" <?= (($qltc->chiTietChiPhi)=='Internet') ? 'selected' : '' ?>>Internet</option>
+			  		<option value="Khác" <?= (($qltc->chiTietChiPhi)=='Khác') ? 'selected' : '' ?>>Khác</option>
+			  	</select>
+
+			  	<select name="chiTietChiPhi" id="chiTietChiPhiCBH" class="w3-input w3-border chiTietChiPhi"
+			  	 <?= ($qltc->nhomChiPhi == 'Chi Bán Hàng') ? "" : "disabled='disabled' style='display: none;'"?>>
+			  		<option value="Tiền Xe" <?= (($qltc->chiTietChiPhi)=='Tiền Xe') ? 'selected' : '' ?>>Tiền Xe</option>
+			  		<option value="Chi Tiêu" <?= (($qltc->chiTietChiPhi)=='Chi Tiêu') ? 'selected' : '' ?>>Chi Tiêu</option>
+			  		<option value="Kiểm Định" <?= (($qltc->chiTietChiPhi)=='Kiểm Định') ? 'selected' : '' ?>>Kiểm Định</option>
+			  	</select>
+
+			  	<select name="chiTietChiPhi" id="chiTietChiPhiCN" class="w3-input w3-border chiTietChiPhi"
+			  	 <?= ($qltc->nhomChiPhi == 'Cá Nhân') ? "" : "disabled='disabled' style='display: none;'"?>>
+			  		<option value="Vay Mượn" <?= (($qltc->chiTietChiPhi)=='Vay Mượn') ? 'selected' : '' ?>>Vay Mượn</option>
+			  		<option value="Hoa Hồng" <?= (($qltc->chiTietChiPhi)=='Hoa Hồng') ? 'selected' : '' ?>>Hoa Hồng</option>
+			  	</select>
+
+			  	<select name="chiTietChiPhi" id="chiTietChiPhiTN" class="w3-input w3-border chiTietChiPhi"
+			  	 <?= ($qltc->nhomChiPhi == 'Trả Nợ') ? "" : "disabled='disabled' style='display: none;'"?>>
+			  		<option value="Ngân Hàng" <?= (($qltc->chiTietChiPhi)=='Ngân Hàng') ? 'selected' : '' ?>>Ngân Hàng</option>
+			  		<option value="Người Thân" <?= (($qltc->chiTietChiPhi)=='Người Thân') ? 'selected' : '' ?>>Người Thân</option>
+			  		<option value="Khác" <?= (($qltc->chiTietChiPhi)=='Khác') ? 'selected' : '' ?>>Khác</option>
+			  	</select>
+            </div>
+
+            <div class="w3-col l12">
+                <label class="w3-text-green"><b>Số Tiền</b></label>
+                <?php echo $form->render('soTien', array('class' => 'w3-input w3-border soTienThucChi keyUpFormatAmount')); ?>
+            </div>
+
+            <div class="w3-col l3 m4">
+                <label class="w3-text-green"><b>Người Nhận</b></label>
+                <input type="hidden" name="idNhaCungCap" class="idNhaCungCap" value="<?= isset($qltc->NhaCungCap->id) ? $qltc->NhaCungCap->id : '' ?>">
+                
+                <?php 
+
+                    if ($qltc->nguonChi == 'Chi Phí') {
+                        $value = "value='".$qltc->nguoiNhan."' readonly";
+                    } elseif ($qltc->nguonChi == 'Sản Xuất') {
+                        $value = "value='".$qltc->NhaCungCap->tenNhaCungCap."' readonly";
+                    } else {
+                        $value = "value='".$qltc->nguoiNhan."'";
+                    }
+                 ?>
+
+				<input type="text" id="nguoiNhan" name="nguoiNhan" class="w3-input w3-border tenNhaCungCap" <?= $value; ?> >
+            </div>
+            <div class="w3-col l3 m4">
+                <label class="w3-text-green"><b>Hình Thức</b></label>
+                <?php echo $form->render('hinhThuc', array('class' => 'hinhThuc w3-input w3-border')); ?>
+            </div>
+            <div class="w3-col l3 m4">
+                <label class="w3-text-green"><b>Tên Ngân Hàng</b></label>
+
+			  	<?php if (!empty($qltc->ckNganHang)): ?>
+				
+					<input type="text" name="ckNganHang" class="tenNganHang w3-input w3-border w3-light-gray"  disabled="disabled" style="display: none">
+				  	<?php echo $form->render('ckNganHang', array('class' => 'ckNganHang w3-input w3-border')); ?>
+
+				<?php else: ?>
+
+					<input type="text" name="ckNganHang" class="tenNganHang w3-input w3-border w3-light-gray"  disabled="disabled">
+				  	<?php echo $form->render('ckNganHang', array('class' => 'ckNganHang w3-input w3-border' , 'disabled' => 'disabled' , 'style' => 'display:none')); ?>
+
+				<?php endif ?>
+            </div>
+
+            <div class="w3-col l3 m6">
+                <label class="w3-text-green"><b>Ghi Chú</b></label>
+                <?php echo $form->render('ghiChu', array('class' => 'w3-input w3-border ghiChu')); ?>
+            </div>
+        </div>
+        <div class="w3-section"><button class="w3-btn w3-green">Edit</button></div>
+    </form>
+</div>
+<div id="thucChi">
+    <div class="listNhaCungCapModal w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick='$(".listNhaCungCapModal").hide()' class="w3-button w3-display-topright">&times;</span>
+                <input type="hidden" id="listNhaCungCapLink" value="<?php echo $this->url->get('nhacungcap/list') ?>" />
+                <div id="listNhaCungCapTable">
+                    xxxx
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="listDatHangModal" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick='$("#listDatHangModal").hide()' class="w3-button w3-display-topright">&times;</span>
+                <input type="hidden" id="listDatHangLink" value="<?php echo $this->url->get('dathang/list') ?>" />
+                <div id="listDatHangTable">
+                    xxxx
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="listChiPhiModal" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick='$("#listChiPhiModal").hide()' class="w3-button w3-display-topright">&times;</span>
+                <input type="hidden" id="listChiPhiLink" value="<?php echo $this->url->get('quanlychiphi/list') ?>" />
+                <div id="listChiPhiTable">
+                    xxxx
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

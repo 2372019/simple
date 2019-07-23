@@ -1,0 +1,130 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+    <input type="hidden" value="<?= $this->url->get('dathang/ajaxSearch') ?>" id="linkAddThongTinSendAjax">
+	<div class="w3-col l2 m4 s2 filter-limit">
+		
+		<span class="name-filter">Limit:</span>
+		
+		<?php 
+		$limtSelector = new Phalcon\Forms\Element\Select('limitAddThongTin', [
+				"25" 		=> "25",
+				"50"  		=> "50",
+				"100"  		=> "100",
+				"200" 		=> "200",
+				"500" 		=> "500",
+				"1000" 		=> "1,000",
+		]);
+		
+		$limtSelector->setDefault($limit);
+		
+		echo $limtSelector->render();
+		?>
+	</div>
+	
+	<div class="w3-col l5 m8 s10 filter-search">
+		<span class="name-filter">Filter: </span> 
+		<input type="search" id="addThongTinFilterRows" name="addThongTinFilterRows" value="<?= $filterRows; ?>">
+		<button type="button" id="btnAddThongTinResetFilter" class="buttonX" >x</button>
+		<button type="button" id="btnAddThongTinFilter" class="w3-green submit" >Filter</button>
+	</div>
+	<div class="w3-col l5 filter-date">
+		<span class="name-filter">Ngày: </span> 
+		<input type="date" name="addThongTinDateStart" value="<?= date("Y-m-d") ?>">
+		<input type="date" name="addThongTinDateEnd" value="<?= date("Y-m-d") ?>">
+		<button type="button" class="w3-green submit" id="btnAddThongTinDate">Gửi</button>
+	</div>
+</div>
+<div class="w3-responsive" id="drag-scroll">
+	<table id="table-show" class="w3-table-all">
+		<thead>
+		  	<tr class="w3-blue">
+				<th>STT</th>
+				<th><a class="orderColumn width100px" onclick="orderByAddThongTin(this)">Ngày
+					<input type="hidden" name="ngay" value="ngay ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width200px" onclick="orderByAddThongTin(this)">Tên Nhà Cung Cấp
+					<input type="hidden" name="tenNhaCungCap" value="tenNhaCungCap ASC">
+					</a>
+				</th>
+				<th class="width100px">Mã SP</th>
+				<th><a class="orderColumn" onclick="orderByAddThongTin(this)">Công Nợ
+					<input type="hidden" name="congNo" value="congNo ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width100px" onclick="orderByAddThongTin(this)">Tổng Cộng Chưa VAT
+					<input type="hidden" name="tongCongChuaVAT" value="tongCongChuaVAT ASC">
+					</a>
+				</th>
+				<th class="w3-center"><a class="orderColumn" onclick="orderByAddThongTin(this)">Thuế VAT
+					<input type="hidden" name="thueVAT" value="thueVAT ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn width100px" onclick="orderByAddThongTin(this)">Tổng tiền thanh toán
+					<input type="hidden" name="tongTienThanhToan" value="tongTienThanhToan ASC">
+					</a>
+				</th>
+				<th><a class="orderColumn" onclick="orderByAddThongTin(this)">Nhập Kho
+					<input type="hidden" name="nhapKho" value="nhapKho ASC">
+					</a>
+				</th>
+				<th></th>
+				<th>Ghi Chú</th>
+		  	</tr>
+		</thead>
+		<tbody id="addThongTinTbody" class="tbody">
+			<?php
+			 if ( count($page->items) ) {
+				
+				$stt = 1;
+				foreach ( $page->items as $dathang ) {
+				?>
+					<tr>
+						<td data-label ='STT'><?= $stt + ($page->current - 1) * $page->limit; ?></td>
+						<td data-label ='Ngày' class=""><a href="#" onclick="chonAddThongTin(this)" title="<?= $dathang['id'] ?>" class="chonAddThongTin"><?= $dathang['ngay'] ?></a></td>
+						<input type="hidden" name="" class="idDatHangNhaCungCap" value="<?= $dathang['idNhaCungCap'] ?>">
+						<td data-label ='Tên Nhà CC' class='tenNhaCungCapDatHang'><?= $dathang['tenNhaCungCap'] ?></td>
+						<td data-label ='Mã SP'><?= $dathang['maSanPham'] ?></td>
+						<td data-label ='Công Nợ' class="w3-right-align w3-bold congNoDatHang"><?= number_format($dathang['congNo']) ?></td>
+						<td data-label ='Tổng Cộng Chưa VAT' class="w3-right-align w3-bold"><?= number_format($dathang['tongCongChuaVAT']) ?></td>
+						<td data-label ='Thuế VAT' class="w3-right-align w3-bold"><?= number_format($dathang['thueVAT']) ?></td>
+						<td data-label ='Tổng Tiền TT' class="w3-right-align w3-bold"><?= number_format($dathang['tongTienThanhToan']) ?></td>
+						<td data-label ='Nhập Kho'><?= $dathang['nhapKho']; ?></td>
+						<td data-label ='Ghi Chú' class="ghiChuDatHang"><?= $dathang['ghiChu']; ?></td>
+					</tr>
+			<?php 
+				$stt++;
+			}} else { ?>
+					<tr>
+						<td colspan="7"><div class="alert alert-warning">Không tìm thấy thông tin</div></td>
+					</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+</div>
+
+<?php
+if ( $page->total_pages > 0 ) { ?>
+	
+	<div class="w3-bar w3-center" id="paginationAddThongTin">
+		<a href="#" title="<?= $page->first; ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)">&laquo;</a>
+		
+		<?php for ( $pageIndex = 1; $pageIndex <= $page->total_pages; $pageIndex++ ) {
+		
+			if ( $pageIndex == $page->current ) { ?>
+				<a href="#" title="<?= $pageIndex ?>" class="w3-button w3-hover-green w3-blue" onclick="paginationAjax(this)"><?= $pageIndex ?></a>
+			<?php } else {
+				?>
+				<a href="#" title="<?= $pageIndex ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)"><?= $pageIndex ?></a>
+			<?php
+			}
+		}
+		?>
+		
+		<a href="#" title="<?= $page->last; ?>" class="w3-button w3-hover-green" onclick="paginationAjax(this)">&laquo;</a>
+		
+		( <?= $page->current ?> of <?= $page->total_pages ?> )
+		
+	</div>
+
+<?php } ?>
+<?= $this->tag->javascriptInclude('js/js-list-dathang.js') ?>

@@ -1,0 +1,104 @@
+<div class="w3-main">
+    		
+	<div class="row w3-row-padding">
+
+		<div class="w3-col l2 m4">
+			<label class="w3-text-green"><b>Lý Do Nhập</b></label>
+			<input type="text" name="lyDoNhap" value="<?= $PhieuNhapKho->lyDoNhap ?>" class="w3-input w3-border" readonly="1">
+		</div>
+		<div class="w3-col l2 m4">
+			<label class="w3-text-green"><b>Nhà Cung Cấp</b></label>
+			<input type="text" name="nhaCungCap" value="<?= $PhieuNhapKho->NhaCungCap->tenNhaCungCap ?>" class="w3-input w3-border" readonly="1">
+		</div>
+		<div class="w3-col l2 m4">
+			<label class="w3-text-green"><b>Người Nhận Hàng</b></label>
+			<input type="text" name="nguoiNhanHang" value="<?= $PhieuNhapKho->NhanSu->hoTen ?>" class="w3-input w3-border" readonly="1">
+		</div>
+		<div class="w3-col l3 m6">
+			<label class="w3-text-green"><b>Nội Dung</b></label>
+			<input type="text" name="noiDung" value="<?= $PhieuNhapKho->noiDung ?>" class="w3-input w3-border" readonly="1">
+		</div>
+		<div class="w3-col l3 m6">
+			<label class="w3-text-green"><b>Ghi Chú</b></label>
+			<textarea name="ghiChu" class="w3-input w3-border" disabled><?= $PhieuNhapKho->ghiChu ?></textarea>
+		</div>
+
+		<br>
+       
+       <table id="addTable" class="w3-table-all w3-bordered w3-border">
+            <thead>
+                <tr class="w3-red">
+                	<th>STT</th>
+                   	<th>Mã SP</th>
+                   	<th>Tên Sản Phẩm</th>
+                   	<th>Tồn Đầu Kỳ</th>
+                   	<th>Số Lượng Nhập</th>
+                   	<th>Đơn Giá</th>
+                   	<th>Ghi Chú</th>
+                   	<th>Tồn Cuối Kỳ</th>
+                   	<th>Tồn Hiện Tại</th>
+                </tr>
+            </thead>
+            <tbody>
+            	<?php 
+            		$i = 0;
+            		$tongTien = 0;
+
+                	foreach ($ctPhieuNhapKho as $value) :?>
+                    		
+                    	<tr class="addTrTable">
+							<td><?= $i + 1 ?></td>
+							<td><?= $value->Products->maSanPham ?></td>
+							<td><?= $value->Products->tenSanPham ?></td>
+							<td><?= $value->tonDauKy ?></td>
+                          	<td><input type="number" name="soLuong" value="<?= $value->soLuong ?>" readonly="1"></td>
+                          	<td><input class="w3-right-align" type="text" name="donGia" value="<?= number_format($value->donGia) ?>" disabled></td>
+                          	<td><input type="text" name="ghiChuCtphieuNhapKho" value="<?= $value->ghiChu ?>" disabled></td>
+                          	<td><?= $value->tonCuoiKy ?></td>
+                          	<td><?= $value->Products->tonHienTai ?></td>
+                         </tr>
+
+            	<?php 
+            		$tongTien += $value->donGia * $value->soLuong;
+                	$i++;
+                	endforeach; 
+                ?>
+
+                <tr>
+					<td colspan="2">
+						<label>Xuất Hóa Đơn</label>
+						<input type="checkbox" id="coXuatHoaDonKhong" name="coXuatHoaDonKhong" value="1" class="w3-check" disabled <?= ($PhieuNhapKho->thueVAT) ? "checked" : "" ?> >
+					</td>
+					<td>Tổng SL: </td>
+					<td>
+						<input type="number" name="tongSoLuong" value="<?= $PhieuNhapKho->tongSoLuong ?>" class="w3-input w3-border width130 w3-right-align" readonly="1">	
+					</td>
+					<td colspan="2"></td>
+					<td>Tổng Cộng Chưa VAT:</td>
+					<td colspan="2"><input type="text" value="<?= number_format($tongTien) ?>" readonly="true" class="w3-right-align"></td>
+                </tr>
+                <tr class="thuevat" style=" <?= ($PhieuNhapKho->thueVAT)? "" : "display: none" ?> ">
+                    <td colspan="6"></td>
+                    <td>Thuế VAT:</td>
+                    <td><input type="text" name="thueVAT" value="<?= number_format($PhieuNhapKho->thueVAT); ?>" readonly="true" class="w3-right-align"></td>
+                </tr>
+                <tr class="sum">
+                    <td colspan="2"></td>
+                    <td>Đã Thanh Toán: </td>
+					<td>
+						<input type="text" name="daThanhToan" value="<?= number_format($PhieuNhapKho->daThanhToan); ?>" class="w3-input w3-border width130 w3-right-align keyUpFormatAmount" disabled>
+					</td>
+					<td>Còn Nợ: </td>
+					<td>
+						<input type="text" name="conNo" value="<?= number_format($PhieuNhapKho->conNo); ?>" class="w3-input w3-border width130 w3-right-align keyUpFormatAmount" disabled>
+					</td>
+                    <td>Tổng Tiền:</td>
+                    <td colspan="2"><input type="text" name="tongThanhToan" value="<?= number_format($PhieuNhapKho->tongThanhToan); ?>" readonly="true" class="w3-right-align"></td>
+                </tr>
+            </tbody>
+       </table>
+       <br>
+        <a href="<?= $this->url->get('phieunhapkho/index?activeTab=search') ?>" class="w3-button w3-green">Quay Lại</a>
+	</div>
+
+</div>

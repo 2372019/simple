@@ -1,0 +1,71 @@
+<div class="w3-main w3-container">
+	<?= $this->flashSession->output(); ?>
+	<?= $this->getContent(); // Thông báo lỗi chung?>
+
+	<div class="w3-responsive">
+
+		<div id="hinhThucGiaoDichModal" class="w3-modal">
+            <div class="w3-modal-content w3-animate-zoom" style="width:500px">
+                <header class="w3-container w3-teal"> 
+                    <span id="closeModel" class="w3-button w3-display-topright">&times;</span>
+                    <h2 class="w3-center">Chọn Ngân Hàng</h2>
+                </header>
+                <div class="w3-container">
+                    <div class="w3-panel w3-col l6 m6">
+						<select id="hinhThucGiaoDichSelect" class="w3-select">
+						  	<option value="VCB (Cá Nhân)">VCB (Cá Nhân)</option>
+						  	<option value="Á Châu (Cty)">Á Châu (Cty)</option>
+						  	<option value="Á Châu (Cá Nhân)">Á Châu (Cá Nhân)</option>
+						  	<option value="Vietin (Cty)">Vietin (Cty)</option>
+						  	<option value="Sacom (Cty)">Sacom (Cty)</option>
+						  	<option value="Khác">Khác</option>
+						</select>
+                    </div>
+              </div>
+            </div>
+        </div>
+	</div>
+
+    	<div class="overflowHidden">
+    		<div class="form-group">    
+    			<label class="w3-text-green"><b>Nội Dung</b></label>
+                <input type="text" class="w3-input w3-border" name="noiDung" value="<?= $qltc->noiDung ?>" readonly>
+    		</div>
+
+    		<div>
+    			<div class="w3-third">
+    				<div class="form-group row-inline">    
+    					<label class="w3-text-green"><b>Số Tiền</b></label>
+                        <input type="text" class="w3-input w3-border" name="soTien" value="<?= number_format($qltc->soTien) ?>" readonly>
+    				</div>
+    				<div class="form-group row-inline">      
+    					<label class="w3-text-green"><b>Hình Thức</b></label>
+                        <input type="text" class="w3-input w3-border" name="hinhThuc" value="<?= $qltc->hinhThuc ?>" readonly>
+    				</div>
+    			</div>
+    			<div class="w3-third padding-right-left">
+    				<div class="form-group">      
+    					<label class="w3-text-green"><b>Nguồn Thu</b></label>
+                        <input type="text" class="w3-input w3-border" name="nguonThu" value="<?= $qltc->nguonThu ?>" readonly>
+    				</div>
+    				<div class="form-group">
+    					<label class="w3-text-green"><b>Tên Ngân Hàng</b></label>
+                        <input type="text" class="w3-input w3-border" name="ckNganHang" value="<?= isset($qltc->ckNganHang) ? $qltc->NganHang->tenNganHang : '' ?>" readonly>
+    					
+    				</div>
+    			</div>
+
+    			<div class="w3-third">
+    				<div class="form-group">
+    					<label class="w3-text-green"><b>Tên Khách Hàng</b></label>
+    					<input type="text" name="tenKhachHang" id="tenKhachHang" class="w3-input w3-border w3-light-gray tenKhachHang" value="<?= isset($qltc->Customers->tenKhachHang) ? $qltc->Customers->tenKhachHang : '' ?>" placeholder="" readonly="true">
+    				</div>
+    				<div class="form-group">     
+    					<label class="w3-text-green"><b>Ghi Chú</b></label>
+                        <textarea id="ghiChu" name="ghiChu" class="w3-input w3-border" readonly><?= $qltc->ghiChu ?></textarea>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+	  	<a href="<?= $this->url->get('quanlythuchi/index?activeTab=thu') ?>" class="w3-button w3-green">Quay Lại</a>
+</div>

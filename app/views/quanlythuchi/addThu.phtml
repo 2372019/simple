@@ -1,0 +1,81 @@
+<div class="w3-main w3-container">
+	<div class="w3-responsive">
+		<div id="customersModal" class="w3-modal">
+			<div class="w3-modal-content">
+			  <div class="w3-container">
+                    <span onclick='$("#customersModal").hide()' class="w3-button w3-display-topright">&times;</span>
+                    <input type="hidden" id="listCustomerLink" value="<?php echo $this->url->get('customers/list') ?>" />
+                    <div id="customersTable">
+                        xxxx
+                    </div>
+			  </div>
+			</div>
+		</div>
+
+        <div class="listNhaCungCapModal w3-modal">
+            <div class="w3-modal-content">
+                <div class="w3-container">
+                    <span onclick='$(".listNhaCungCapModal").hide()' class="w3-button w3-display-topright">&times;</span>
+                    <input type="hidden" id="listNhaCungCapLink" value="<?php echo $this->url->get('nhacungcap/list') ?>" />
+                    <div id="listNhaCungCapTable">
+                        xxxx
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+
+    <form action="<?php echo $this->url->get('quanlythuchi/addThu') ?>" method="post" accept-charset="utf-8" id="formAddThu">
+		
+		<input type="hidden" name="addThu" value="addThu">
+    	<div class="overflowHidden">
+    		<div class="form-group">    
+    			<label class="w3-text-green"><b>Nội Dung</b></label>
+    			<?php echo $formThucThu->render('noiDung', array('class' => 'w3-input w3-border')); ?>
+    		</div>
+
+    		<div>
+    			<div class="w3-third">
+    				<div class="form-group row-inline">    
+    					<label class="w3-text-green"><b>Số Tiền</b></label>
+    					<?php echo $formThucThu->render('soTien', array('class' => 'w3-input w3-border keyUpFormatAmount replacePrice')); ?>
+    				</div>
+    				<div class="form-group row-inline">      
+    					<label class="w3-text-green"><b>Hình Thức</b></label>
+    					<?php echo $formThucThu->render('hinhThuc', array('class' => 'hinhThuc w3-input w3-border')); ?>
+    				</div>
+    			</div>
+
+    			<div class="w3-third padding-right-left">
+    				<div class="form-group">      
+    					<label class="w3-text-green"><b>Nguồn Thu</b></label>
+    					<?php echo $formThucThu->render('nguonThu', array('class' => 'w3-input w3-border')); ?>
+    				</div>
+    				<div class="form-group">
+    					<label class="w3-text-green"><b>Tên Ngân Hàng</b></label>
+    					<input type="text" class="tenNganHang w3-input w3-border w3-light-gray" value="" disabled="disabled">
+    					<?php echo $formThucThu->render('ckNganHang', array('class' => 'w3-input w3-border ckNganHang' , 'disabled' => 'disabled' , 'style' => 'display:none')); ?>
+    				</div>
+    			</div>
+                
+    			<div class="w3-third">
+    				<div id="input-khachHang" class="form-group">
+    					<?php echo $formThucThu->render('idKhachHang', array('class' => 'w3-input w3-border idKhachHang')); ?>
+    					<label class="w3-text-green"><b>Tên Khách Hàng</b></label>
+    					<input type="text" name="tenKhachHang" id="tenKhachHang" class="w3-input w3-border tenKhachHang" value="" disabled>
+    				</div>
+                    <div id="input-nhaCungCap" class="form-group" style="display: none">
+                        <input type="hidden" name="idNhaCungCap" id="idNhaCungCapThu" class="w3-input w3-border idNhaCungCap" value="">
+                        <label class="w3-text-green"><b>Nhà Cung Cấp</b></label>
+                        <input type="text" name="tenNhaCungCap" class="w3-input w3-border w3-light-gray tenNhaCungCap" value="" disabled>
+                    </div>
+    				<div class="form-group">     
+    					<label class="w3-text-green"><b>Ghi Chú</b></label>
+    					<?php echo $formThucThu->render('ghiChu', array('class' => 'w3-input w3-border')); ?>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+	  	<div class="w3-section"><button class="w3-btn w3-green">Đăng ký</button></div>
+	</form>
+</div>

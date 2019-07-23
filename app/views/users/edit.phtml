@@ -1,0 +1,77 @@
+<div class="w3-main w3-container">
+    <?= $this->flashSession->output(); ?>
+    <?= $this->getContent(); // Thông báo lỗi chung?>
+    
+    <form action="" method="post" accept-charset="utf-8">
+        <div class="w3-row">
+            <div class="w3-row-padding">
+                <div class="w3-half">
+                    <div class="form-group">    
+                        <label class="w3-text-green"><b>Tên Thành Viên <span class="required">(*)</span></b></label>
+                        <?php echo $form->render('name', array('class' => 'w3-input w3-border validateFiled')); ?>
+                    </div>
+                    <div class="form-group">      
+                        <label class="w3-text-green"><b>Giới Tính</b></label>
+                        <br>
+                        <?php echo $form->render('gender', array('class' => 'w3-input w3-border validateFiled')); ?>
+                    </div>
+                    <div class="form-group">     
+                        <label class="w3-text-green"><b>Ngày Sinh</b></label>
+                        <?php echo $form->render('birth', array('class' => 'w3-input w3-border ','value'=>date('Y-m-d'))); ?>
+                    </div>
+                </div>
+
+                <div class="w3-half">
+                    <div class="form-group">     
+                        <label class="w3-text-green"><b>Tên Đăng Nhập <span class="required">(*)</span></b></label>
+                        <?php echo $form->render('username', array('class' => 'w3-input w3-border validateFiled')); ?>
+                    </div>
+                    <div class="form-group">     
+                        <label class="w3-text-green"><b>Mật Khẩu <span class="required">(*)</span></b></label>
+                        <?php echo $form->render('password', array('class' => 'w3-input w3-border')); ?>
+                    </div>
+                    <div class="form-group">     
+                        <label class="w3-text-green"><b>Nhập Lại Mật Khẩu <span class="required">(*)</span></b></label>
+                        <?php echo $form->render('confirmPassword', array('class' => 'w3-input w3-border')); ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w3-padding-16"></div>
+
+            <div class="w3-row-padding">
+                <div class="w3-half">
+                    <div class="form-group">    
+                        <label class="w3-text-green"><b>Địa Chỉ</b></label>
+                        <?php echo $form->render('address', array('class' => 'w3-input w3-border')); ?>
+                    </div>
+                    <div class="form-group">      
+                        <label class="w3-text-green"><b>Số Điện Thoại</b></label>
+                        <?php echo $form->render('phone', array('class' => 'w3-input w3-border')); ?>
+                    </div>
+                    <div class="form-group">     
+                        <label class="w3-text-green"><b>Email</b></label>
+                        <?php echo $form->render('email', array('class' => 'w3-input w3-border')); ?>
+                    </div>
+                </div>
+                
+                <div class="w3-half">
+                    <div class="form-group">     
+                        <label class="w3-text-green"><b>Hạn Mức Chi Phí</b></label>
+                        <input type="text" id="hanMucChiPhi" name="hanMucChiPhi" value="<?= number_format($users->hanMucChiPhi) ?>" class="w3-input w3-border keyUpFormatAmount replacePrice">
+                    </div>
+                    <div class="form-group">     
+                        <label class="w3-text-green"><b>Phân Quyền</b></label>
+                        <?php echo $form->render('group_id', array('class' => 'w3-input w3-border validateFiled')); ?>
+                    </div>
+                    <div class="form-group">     
+                        <label class="w3-text-green"><b>Trạng Thái</b></label>
+                        <?php echo $form->render('blocked', array('class' => 'w3-input w3-border validateFiled')); ?>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="w3-row-padding"><button id="submit" class="w3-btn w3-green w3-margin-top">Edit</button></div>
+    </form>
+</div>

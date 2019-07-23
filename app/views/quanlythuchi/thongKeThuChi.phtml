@@ -1,0 +1,277 @@
+<div class="w3-row padding-bottom10px padding-top10px">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/thongKeThucChi') ?>" id="linkThongKeThucChi">
+	<input type="hidden" value="<?= $this->url->get('quanlythuchi/thongKeDoanhThu') ?>" id="linkThongKeDoanhThu">
+
+	<div class="thongKeChiTiet">
+
+		<div class="filter-date padding-bottom10px padding-top10px">
+			<span class="name-filter">Ngày: </span> 
+			<input type="date" id="ngayStartThongKeCT" value="<?= date("Y-m-d") ?>">
+			<input type="date" id="ngayEndThongKeCT" value="<?= date("Y-m-d") ?>">
+			<button type="button" class="w3-green submit" id="sendThongKeCT">Gửi</button>
+		</div>
+		
+		<div class="w3-responsive">
+			<table class="w3-table-all">
+
+				<thead>
+					<tr class="w3-blue">
+						<th>
+							<select id="thongKeNguonThu" class="w3-input w3-border">
+								<option value="">Tất Cả</option>
+								<option value="Bán Hàng">Bán Hàng</option>
+								<option value="Vay Mượn">Vay Mượn</option>
+								<option value="Chuyển Vốn">Chuyển Vốn</option>
+								<option value="Khác">Khác</option>
+							</select>
+						</th>
+						<th>Tiền Mặt</th>
+						<th>VCB (Cá Nhân)</th>
+						<th>Á Châu (Cty)</th>
+						<th>Á Châu (Cá Nhân)</th>
+						<th>Vietin (Cty)</th>
+						<th>Sacom (Cty)</th>
+						<th>Khác</th>
+					</tr>
+				</thead>
+				
+				<tbody id="thongKe">
+					
+					<tr>
+						<td>Đầu Kỳ</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Thu</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Chi</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Tồn</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td>Hiện Tại</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+
+	</div>
+
+	<div class="space" style="height: 100px">
+		
+	</div>
+
+	<div class="thongKeChiPhi">
+
+		<div class="filter-date padding-bottom10px padding-top10px">
+			<span class="name-filter">Ngày: </span> 
+			<input type="date" id="ngayStartThongKeThucChi" value="<?= date("Y-m-d") ?>">
+			<input type="date" id="ngayEndThongKeThucChi" value="<?= date("Y-m-d") ?>">
+			<button type="button" class="w3-green submit" id="sendThongKeThucChi">Gửi</button>
+		</div>
+
+		<div class="w3-responsive">
+			<table class="w3-table w3-bordered">
+				<thead>
+					<tr class="w3-blue">
+						<th>Nhóm Chi Phí</th>
+						<th>Chi Tiết Chi Phí</th>
+						<th>Số Tiền</th>
+					</tr>
+				</thead>
+				<tbody id="thongKeThucChi">
+
+					<tr>
+						<td rowspan="6">Sản Xuất</td>
+						<td>Bình</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Motor</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Đầu Nén</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Vật tư</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Khác</td>
+						<td></td>
+					</tr>
+					<tr class="w3-bold">
+						<td>Tổng Cộng</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Văn Phòng</td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td rowspan="3">Quản Lý</td>
+						<td>Hóa Đơn</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Khác</td>
+						<td></td>
+					</tr>
+					<tr class="w3-bold">
+						<td>Tổng Cộng</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Lương</td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Cá Nhân</td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td rowspan="6">Xưởng</td>
+						<td>Thuê Xưởng</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Nước</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Điện</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Internet</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Khác</td>
+						<td></td>
+					</tr>
+					<tr class="w3-bold">
+						<td>Tổng Cộng</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td rowspan="4">Chi Bán Hàng</td>
+						<td>Tiền Xe</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Hoa Hồng</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Kiểm Định</td>
+						<td></td>
+					</tr>
+					<tr class="w3-bold">
+						<td>Tổng Cộng</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td rowspan="4">Trả Nợ</td>
+						<td>Ngân Hàng</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Người Thân</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Khác</td>
+						<td></td>
+					</tr>
+					<tr class="w3-bold">
+						<td>Tổng Cộng</td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Chuyển Vốn</td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Vay Mượn</td>
+						<td></td>
+						<td></td>
+					</tr>
+					
+					<tr>
+						<td>Khác</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr class="ketQuaTKChi">
+						<td colspan="2">Tổng Cộng</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</div>
+
+<script>
+
+	
+	
+</script>

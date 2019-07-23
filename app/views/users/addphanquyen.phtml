@@ -1,0 +1,54 @@
+<?php 
+    
+    $arrayKey = array(
+        'index'             => 'Trang Search và Thêm',
+        'ajaxSearch'        => 'Chức Năng Sắp Xếp',
+        'edit'              => 'Trang Sửa',
+        'editThu'           => 'Trang Sửa QL Thu',
+        'editChi'           => 'Trang Sửa QL Chi',
+        'delete'            => 'Chức Năng Xóa',
+        'addPhanQuyen'      => 'Thêm Phân Quyền',
+        'editPhanQuyen'     => 'Sửa Phân Quyền',
+        'deletePhanQuyen'   => 'Xóa Phân Quyền',
+        'thongKeThucChi'    => 'Xem Thống Kê Thực Chi',
+        'thongKeDoanhThu'   => 'Xem Thống Kê Doanh Thu',
+    );
+
+?>
+<div class="w3-main w3-container">
+    <?= $this->flashSession->output(); ?>
+    <?= $this->getContent(); // Thông báo lỗi chung?>
+
+    <form action="" method="post" accept-charset="utf-8">
+        <div class="w3-row">
+
+            <div class="w3-row-padding">
+                <div class="w3-col l4 m4">
+                    <div class="form-group">    
+                        <label class="w3-text-green"><b>Tên Phân Quyền <span class="required">(*)</span></b></label>
+                        <input type="text" name="name" value="" class="w3-input w3-border validateFiled">
+                    </div>
+                </div>
+
+                <div class="w3-col l8 m8">
+					<ul class="list-phanquyen">
+						<?php foreach ($resource as $key => $values) :?>
+							<li class="item"><span class="controller"><?= $key ?></span>
+								<ul>	
+
+								<?php foreach ($values as $value): ?>
+									<li><input type="checkbox" name="phanquyen[<?= $key ?>][]" value="<?= $value ?>">
+                                        <?= array_key_exists($value, $arrayKey) ? $arrayKey[$value] : $value ?>
+                                    </li>
+								<?php endforeach ?>
+								</ul>
+							</li>
+						<?php endforeach;?>
+					</ul>
+                </div>
+            </div>
+            
+        </div>
+        <div class="w3-row-padding"><button id="submit" class="w3-btn w3-green w3-margin-top">Đăng ký</button></div>
+    </form>
+</div>

@@ -1,0 +1,107 @@
+<div class="w3-container">
+	<input type="hidden" name="thongKe" id="sendThongKe" value="<?= $this->url->get('phatsinhtrongngay/ajaxThongKe') ?>">
+	<div class="row row-padding">
+		<div class="w3-col l4">
+			<div class="nav-tabs">
+				<div class="tabsItem active">Thực Chi</div>
+				<div class="tabsItem">Trong Ngày</div>
+				<div class="tabsItem">Khác</div>
+			</div>
+		</div>
+
+		<div class="w3-col l8">
+			<div class="w3-inline-block">
+				<span class="name-filter">Ngày: </span>
+				<input type="date" name="dateStart" value="<?= date('Y-m-d') ?>" min="<?= date('Y-m-d',(strtotime ( '-1 years' , strtotime ( date('Y-m-d')) ) )) ?>">
+				<input type="date" name="dateEnd"  value="<?= date('Y-m-d') ?>" max="<?= date('Y-m-d') ?>">
+				<button type="button" class="w3-green submit" id="sendDateTK">Gửi</button>
+			</div>
+
+			<div class="w3-inline-block">
+
+				<button id='lastWeek' class="button-thongKe">Last Week</button>
+				<input type="hidden" name="" id="lastWeekDateStart" value="<?= date('Y-m-d', strtotime("last Week")) ?>">
+				<input type="hidden" name="" id="lastWeekDateEnd" value="<?= date('Y-m-d', strtotime(date('Y-m-d', strtotime("last Week"))."+6 day")) ?>">
+
+				<button id='thisMonth' class="button-thongKe">This Month</button>
+				<input type="hidden" name="" id="thisMonthDateStart" value="<?= date('Y-m-01') ?>">
+				<input type="hidden" name="" id="thisMonthDateEnd" value="<?= date('Y-m-d') ?>">
+
+				<button id='lastMonth' class="button-thongKe">Last Month</button>
+				<input type="hidden" name="" id="lastMonthDateStart" value="<?= date('Y-m-d', strtotime("first day of last Month")) ?>">
+				<input type="hidden" name="" id="lastMonthDateEnd" value="<?= date('Y-m-d', strtotime("last day of last Month")) ?>">
+
+				<button id='lastYear' class="button-thongKe">Last Year</button>
+				<input type="hidden" name="" id="lastYearDateStart" value="<?= date('Y-01-01', strtotime("last Year")) ?>">
+				<input type="hidden" name="" id="lastYearDateEnd" value="<?= date('Y-12-31', strtotime("last Year")) ?>">
+
+				<button id='year' class="button-thongKe">Year</button>
+				<input type="hidden" name="" id="yearDateStart" value="<?= date('Y-01-01') ?>">
+				<input type="hidden" name="" id="yearDateEnd" value="<?= date('Y-m-d') ?>">
+				
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="row row-padding">
+		<div class="w3-col l3">
+			<div id="tabs0" name="tabs" class="">
+				<ul id="thucThu" class="items"><span class="tieuDeThongKe">Quản Lý Thực Thu</span>
+					<input type="hidden" name="nameArray" value="thucThu" class="nameArray">
+					<li>
+						<ul class="subitems"><a href="#" id="thongKeThucThuNguonThu" title='thuNguonThu' class="clickThongKe">Nguồn Thu</a>
+						</ul>
+					</li>
+
+					<li>
+						<ul class="subitems"><a href="#" id="thongKeThucThuNganHang" title='thuNganHang' class="clickThongKe">Ngân Hàng</a>
+						</ul>
+					</li>
+					
+				</ul>
+
+				<ul id="thucChi" class="items subli"><span class="tieuDeThongKe">Quản Lý Thực Chi</span>
+					<input type="hidden" name="nameArray" value="thucChi" class="nameArray">
+					<li><a href="#" title='sanXuat' class="clickThongKe">Sản Xuất</a></li>
+					<li><a href="#" title='chiPhi' class="clickThongKe">Chi Phí</a></li>
+					<li><a href="#" title='thucChiKhac' class="clickThongKe">Khác</a></li>
+				</ul>
+			</div>
+			<div id="tabs1" name="tabs" class="w3-hide">
+				
+				<ul id="thongKeTrongNgay" class="items subli"><span class="tieuDeThongKe">Thống Kê Trong Ngày</span>
+					<input type="hidden" name="nameArray" value="trongNgay" class="nameArray">
+					<li><a href="#" title='soDonHangTrongNgay' class="clickThongKe">Số Đơn Hàng</a></li>
+					<li><a href="#" title='doanhThuCoVATTrongNgay' class="clickThongKe">Doanh Thu Có VAT</a></li>
+					<li><a href="#" title='doanhThuKhongVATTrongNgay' class="clickThongKe">Doanh Thu Không VAT</a></li>
+					<li><a href="#" title='thueVATTrongNgay' class="clickThongKe">Thuế VAT</a></li>
+					<li><a href="#" title='thuDonHangTrongNgay' class="clickThongKe">Thu Đơn Hàng</a></li>
+					<li><a href="#" title='congNoTrongNgay' class="clickThongKe">Công Nợ</a></li>
+					<li><a href="#" title='tongThuTrongNgay' class="clickThongKe">Tổng Thu</a></li>
+					<li><a href="#" title='tongChiTrongNgay' class="clickThongKe">Tổng Chi</a></li>
+				</ul>
+			</div>
+			<div id="tabs2" name="tabs" class="w3-hide">
+				
+				<ul id="thongKeKhac" class="items subli"><span class="tieuDeThongKe">Thống Kê Khác</span>
+					<input type="hidden" name="nameArray" value="chung" class="nameArray">
+					<li><a href="#" title='doanhThuCoVAT' class="clickThongKe">Doanh Thu Có VAT</a></li>
+					<li><a href="#" title='doanhThuKhongVAT' class="clickThongKe">Doanh Thu Không VAT</a></li>
+					<li><a href="#" title='thueVAT' class="clickThongKe">Thuế VAT</a></li>
+					<li><a href="#" title='tongCongNo' class="clickThongKe">Tổng Công Nợ</a></li>
+					<li><a href="#" title='congNoThayDoi' class="clickThongKe">Công Nợ Thay Đổi</a></li>
+					<li><a href="#" title='sanPhamNoiBat' class="clickThongKe">Sản Phẩm Nổi Bật</a></li>
+					<li><a href="#" title='sanPhamKhac' class="clickThongKe">Sản Phẩm Khác</a></li>
+				</ul>
+			</div>
+
+			
+		</div>
+		<div class="w3-col l9" id="thongKe" style="min-width: 310px; height: 400px; margin: 0 auto">
+			
+		</div>
+	</div>
+</div>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>

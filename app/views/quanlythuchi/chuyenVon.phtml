@@ -1,0 +1,35 @@
+<div class="w3-main w3-container">
+	<form action="<?php echo $this->url->get('quanlythuchi/chuyenVon') ?>" method="post" accept-charset="utf-8">
+		<div class="w3-center">
+			<label for="">Từ</label>
+
+        	<?php 
+				$chiChuyenVon = new Phalcon\Forms\Element\Select('chiChuyenVon', NganHang::find(),[
+					'using'	=> ['id', 'tenNganHang'],
+					'useEmpty'   => true,
+		            'emptyText'  => 'Tiền Mặt',
+		            'emptyValue' => 'Tiền Mặt',
+				]);
+				
+				echo $chiChuyenVon->render();
+			?>
+
+			<label for="">Đến</label>
+			<?php 
+				$thuChuyenVon = new Phalcon\Forms\Element\Select('thuChuyenVon', NganHang::find(),[
+					'using'	=> ['id', 'tenNganHang'],
+					'useEmpty'   => true,
+		            'emptyText'  => 'Tiền Mặt',
+		            'emptyValue' => 'Tiền Mặt',
+				]);
+				
+				echo $thuChuyenVon->render();
+			?>
+			
+			<label for="">Số Tiền</label>
+			<input type="text" name="soTien" class="keyUpFormatAmount" value="">
+
+			<button class="w3-btn w3-green">Chuyển Vốn</button>
+		</div>
+	</form>
+</div>

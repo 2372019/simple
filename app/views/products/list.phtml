@@ -1,0 +1,81 @@
+<div id="productsList">
+	<div class="w3-row padding-bottom10px padding-top10px">
+		<div class="w3-col padding-bottom10px">
+			<button type="button" class="w3-green" id="btnArraySanPham">Chọn</button>
+		</div>
+		<div class="w3-col l2 m4 s2 filter-limit">
+			<input type="hidden" value="<?= $this->url->get('products/ajaxSearch') ?>" id="listLinkSendAjax">
+			<input type="hidden" value="<?= $this->url->get('products/edit/') ?>" id="linkProductsEdit">
+			<span class="name-filter">Limit:</span>
+			
+			<?php 
+			$limtSelector = new Phalcon\Forms\Element\Select('listLimit', [
+					"25" 		=> "25",
+					"50"  		=> "50",
+					"100"  		=> "100",
+					"250" 		=> "250",
+					"500" 		=> "500",
+					"1000" 		=> "1,000",
+			]);
+			
+			$limtSelector->setDefault($limit);
+			
+			echo $limtSelector->render();
+			?>
+		</div>
+		<div class="w3-col l5 m8 s10 filter-search">
+			<span class="name-filter">Filter: </span> 
+			<input type="search" id="listFilterRows" name="listFilterRows" value="" placeholder="Search this table">
+			<button type="button" id="btnResetFilter" class="buttonX">x</button>
+			<button type="button" class="w3-green" id="btnFilterListProduct">Filter</button>
+		</div>
+	</div>
+
+	<div class="w3-responsive" style="height: 400px">
+		<table id="table-show" class="w3-table-all">
+			<thead>
+				<tr class="w3-blue">
+					<th></th>
+					<th>STT</th>
+					<th><a class="orderColumn" onclick="listOrderByProducts(this)">Mã SP
+						<input type="hidden" name="maSanPham" value="maSanPham ASC">
+						</a>
+					</th>
+					<th><a class="orderColumn" onclick="listOrderByProducts(this)">Tên Sản Phẩm
+						<input type="hidden" name="tenSanPham" value="tenSanPham ASC">
+						</a>
+					</th>
+					<th><a class="orderColumn" onclick="listOrderByProducts(this)">Giá Bán
+						<input type="hidden" name="donGiaMoiNhat" value="donGiaMoiNhat ASC">
+						</a>
+					</th>
+					<th><a class="orderColumn" onclick="listOrderByProducts(this)">Giá Gốc
+						<input type="hidden" name="donGiaMuaVao" value="donGiaMuaVao ASC">
+						</a>
+					</th>
+					<th><a class="orderColumn" onclick="listOrderByProducts(this)">Tồn H.Tại
+						<input type="hidden" name="tonHienTai" value="tonHienTai ASC">
+						</a>
+					</th>
+					<th><a class="orderColumn" onclick="listOrderByProducts(this)">Tồn B.Đầu
+						<input type="hidden" name="tonKhoBanDau" value="tonKhoBanDau ASC">
+						</a>
+					</th>
+					<th><a class="orderColumn" onclick="listOrderByProducts(this)">Loại Sản Phẩm
+						<input type="hidden" name="loaiSanPham" value="type ASC">
+						</a>
+					</th>
+					<th><a class="orderColumn" onclick="listOrderByProducts(this)">Mô tả
+						<input type="hidden" name="moTa" value="type ASC">
+						</a>
+					</th>
+				</tr>
+			</thead>
+			<tbody id="listTable" class="tbody">
+			</tbody>
+		</table>
+	</div>
+	<div class="w3-bar w3-center" id="listPagination">
+	</div>
+</div>
+<?= $this->tag->javascriptInclude('js/js-list-products.js') ?>
